@@ -7,5 +7,8 @@ namespace Clinica
 {
     public class Clinic
     {
+        public string user { get; set; }
+        public string name { get; set; }
+        
     }
 }

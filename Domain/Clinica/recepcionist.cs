@@ -5,7 +5,8 @@ using System.Web;
 
 namespace Clinica
 {
-    public class recepcionist
+    public class Recepcionist : Clinic
     {
+
     }
 }
