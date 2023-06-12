@@ -59,7 +59,7 @@ namespace Negocio
             {
                 var sqlEspecialidad = @"
                     SELECT IdEspecialidad
-                    FROM Especialidades
+                    FROM EspecialidadesDoctores
                     WHERE IdDoctor = @IdDoctor
                 ";
 

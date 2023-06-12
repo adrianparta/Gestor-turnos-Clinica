@@ -24,14 +24,9 @@ public enum TipoUsuario
     Doctor,
     Recepcionista   
 }
-
-public enum Dia
+public enum Sexo
 {
-    Lunes,
-    Martes,
-    Miercoles,
-    Jueves,
-    Viernes,
-    Sabado,
-    Domingo
+    Masculino,
+    Femenino,
+    PrefiereNoDecir
 }
