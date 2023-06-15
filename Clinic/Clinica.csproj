@@ -70,6 +70,7 @@
     <Content Include="Content\ClinicaIcono.png" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="TurnosMed.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +92,13 @@
       <DependentUpon>MasterPage.Master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TurnosMed.aspx.cs">
+      <DependentUpon>TurnosMed.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TurnosMed.aspx.designer.cs">
+      <DependentUpon>TurnosMed.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="MasterPage.Master" />
