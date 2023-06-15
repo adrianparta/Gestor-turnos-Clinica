@@ -8,7 +8,7 @@ namespace Negocio
         public static Usuario Login(string email, string contraseña)
         {
             var sqlUsuario = @"
-                SELECT Id
+                SELECT IdUsuario
                     , Email
                     , TipoUsuario
                     , Nombre

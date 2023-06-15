@@ -20,9 +20,10 @@ public enum Especialidad
 
 public enum TipoUsuario
 {
-    Admin,
+    Admin = 1,
     Doctor,
-    Recepcionista   
+    Recepcionista,
+    Paciente
 }
 public enum Sexo
 {
