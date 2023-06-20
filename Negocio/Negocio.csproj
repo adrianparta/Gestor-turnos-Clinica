@@ -47,6 +47,7 @@
     <Compile Include="AccesoDatos.cs" />
     <Compile Include="DoctorNegocio.cs" />
     <Compile Include="PacienteNegocio.cs" />
+    <Compile Include="TipoUsuarioNegocio.cs" />
     <Compile Include="TurnoNegocio.cs" />
     <Compile Include="UsuarioNegocio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

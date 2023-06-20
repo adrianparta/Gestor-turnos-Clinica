@@ -68,6 +68,7 @@
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
+    <Content Include="RegistroUsuario.aspx" />
     <Content Include="TurnosMed.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -97,6 +98,13 @@
       <DependentUpon>MasterPage.Master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegistroUsuario.aspx.cs">
+      <DependentUpon>RegistroUsuario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RegistroUsuario.aspx.designer.cs">
+      <DependentUpon>RegistroUsuario.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TurnosMed.aspx.cs">
       <DependentUpon>TurnosMed.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

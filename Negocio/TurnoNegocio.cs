@@ -67,10 +67,11 @@ namespace Negocio
             {
                 return db.Query<Turno, Doctor, Turno>(sql, (turno, doctor) =>
                 {
+                    doctor.Especialidades = DoctorNegocio.ObtenerEspecialidades(doctor.IdDoctor);
                     turno.Doctor = doctor;
                     turno.Paciente = paciente;
                     return turno;
-                }, new { IdPaciente = paciente.IdPaciente }, splitOn: "IdDoctor").ToList();
+                }, new { IdPaciente = paciente.IdPaciente }, splitOn: "IdDoctor,IdEspecialidad").ToList();
             }
         }
     }

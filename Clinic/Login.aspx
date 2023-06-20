@@ -8,9 +8,9 @@
             <div class="col-md-4 mx-auto">
                 <img class="mb-4" src="..\..\Content\ClinicaIcono.png" alt="" width="72" height="72">
                 <h1 class="h3 mb-3 font-weight-normal">Bienvenido a la Clinica</h1>
-                <label for="inputEmail" class="d-flex form-label">Ingrese su Email</label>
+                <label for="txtEmail" class="d-flex form-label">Ingrese su Email</label>
                 <asp:TextBox TextMode="Email" ID="txtEmail" CssClass="form-control" placeholder="Email" runat="server" />
-                <label for="inputPassword" class="d-flex form-label">Ingrese su contraseña</label>
+                <label for="txtPassword" class="d-flex form-label">Ingrese su contraseña</label>
                 <asp:TextBox TextMode="Password" ID="txtPassword" CssClass="form-control" placeholder="Password" runat="server" />
                 <br />
                 <div class="position-absolute start-50">

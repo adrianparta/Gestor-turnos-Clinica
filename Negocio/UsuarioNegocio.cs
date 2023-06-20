@@ -33,5 +33,40 @@ namespace Negocio
                 return usuario;
             }
         }
+
+        public static int UsuarioAlta(Usuario usuario, string contraseña)
+        {
+            var sqlUsuario = @"
+                IF NOT EXISTS ( 
+                    SELECT IdUsuario 
+                    FROM Usuarios
+                    WHERE Email = @Email
+                    )
+                BEGIN
+                    INSERT INTO Usuarios 
+                        (Email, TipoUsuario, Nombre, Apellido, Contraseña)
+                    VALUES
+                        (@Email, @TipoUsuario, @Nombre, @Apellido, @Contraseña)
+
+                    SELECT SCOPE_IDENTITY()
+                END
+                ELSE
+                BEGIN
+	                SELECT -1
+                END
+            ";
+
+            using (var db = Coneccion())
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@Email", usuario.Email);
+                parametros.Add("@TipoUsuario", usuario.TipoUsuario);
+                parametros.Add("@Nombre", usuario.Nombre);
+                parametros.Add("@Apellido", usuario.Apellido);
+                parametros.Add("@Contraseña", contraseña);
+
+                return db.ExecuteScalar<int>(sqlUsuario, parametros);
+            }
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace Clinic
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!EstaLogeado() && !(Page is Login))
+            if(!EstaLogeado() && !(Page is Login) && !(Page is RegistroUsuario))
             {
                 Response.Redirect("Login.aspx");
             }

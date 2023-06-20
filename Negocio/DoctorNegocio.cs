@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Dominio;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Negocio
@@ -59,6 +60,7 @@ namespace Negocio
             {
                 var sqlEspecialidad = @"
                     SELECT IdEspecialidad
+                        , Especialidad AS Nombre
                     FROM EspecialidadesDoctores
                     WHERE IdDoctor = @IdDoctor
                 ";
@@ -68,6 +70,21 @@ namespace Negocio
                 doctor.Turnos = TurnoNegocio.ObtenerTurnosDeDoctor(doctor);
 
                 return doctor;
+            }
+        } 
+        internal static List<Especialidad> ObtenerEspecialidades(int idDoctor)
+        {
+            using (var db = Coneccion())
+            {
+                var sqlEspecialidad = @"
+                    SELECT E.IdEspecialidad
+                        , E.Especialidad AS Nombre
+                    FROM Especialidades E 
+                    INNER JOIN EspecialidadesDoctores ED ON ED.IdEspecialidad = E.IdEspecialidad
+                    WHERE IdDoctor = @IdDoctor
+                ";
+
+                return db.Query<Especialidad>(sqlEspecialidad, new { IdDoctor = idDoctor }).ToList();
             }
         }
     }

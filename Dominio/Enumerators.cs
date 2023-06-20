@@ -7,17 +7,6 @@
     Cerrado
 }
 
-public enum Especialidad
-{
-    Ginecologia,
-    Pediatria,
-    Oftalmologia,
-    Oncologia,
-    Traumatologia,
-    Psicologia,
-    Odontologia
-}
-
 public enum TipoUsuario
 {
     Admin = 1,
