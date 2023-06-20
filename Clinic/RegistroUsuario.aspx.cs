@@ -12,6 +12,7 @@ namespace Clinic
     public partial class RegistroUsuario : System.Web.UI.Page
     {
         public bool esAdmin;
+        public int idUsuarioModificar = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
             ddlTipoUsuario.DataSource = TipoUsuarioNegocio.ObtenerTiposUsuarios();
@@ -19,8 +20,16 @@ namespace Clinic
             if(!(Session["Usuario"] is null))
             {
                 esAdmin = ((Usuario)Session["Usuario"]).TipoUsuario == TipoUsuario.Admin;
-            }
-            esAdmin = true;
+                idUsuarioModificar = Convert.ToInt32(Request.QueryString["idUsuarioModificar"]);        
+                if(idUsuarioModificar > 0)
+                {
+                    var usuario = UsuarioNegocio.ObtenerUsuario(idUsuarioModificar);
+                    txtApellido.Text = usuario.Apellido;
+                    txtEmail.Text = usuario.Email;
+                    txtNombre.Text = usuario.Nombre;
+                    ddlTipoUsuario.SelectedIndex = (int) (usuario.TipoUsuario -1);
+                }
+            }     
         }
 
         protected void btnCancelar_Click(object sender, EventArgs e)
@@ -41,13 +50,31 @@ namespace Clinic
             if (esAdmin)
             {
                 nuevoUsuario.TipoUsuario = (TipoUsuario) (ddlTipoUsuario.SelectedIndex + 1);
-                int idUsuario = UsuarioNegocio.UsuarioAlta(nuevoUsuario, txtPassword.Text);
-                if(idUsuario > 0)
+                if (idUsuarioModificar > 0)
                 {
-                    nuevoUsuario.IdUsuario = idUsuario;
-                    if (nuevoUsuario.TipoUsuario == TipoUsuario.Doctor)
+                    if(UsuarioNegocio.ModificarUsuario(nuevoUsuario, idUsuarioModificar))
                     {
-                        // Response.Redirect("RegistroDoctor.aspx"); 
+
+                    }
+                    else
+                    {
+                        //Error
+                    }
+                }
+                else
+                {
+                    int idUsuario = UsuarioNegocio.UsuarioAlta(nuevoUsuario, txtPassword.Text);
+                    if(idUsuario > 0)
+                    {
+                        nuevoUsuario.IdUsuario = idUsuario;
+                        if (nuevoUsuario.TipoUsuario == TipoUsuario.Doctor)
+                        {
+                            // Response.Redirect("RegistroDoctor.aspx"); 
+                        }
+                    }
+                    else
+                    {
+                        //Error
                     }
                 }
             }
@@ -60,6 +87,10 @@ namespace Clinic
                     nuevoUsuario.IdUsuario = idUsuario;
                     Session.Add("Usuario", nuevoUsuario);
                     Response.Redirect("Default.aspx");
+                }
+                else
+                {
+                    //Error
                 }
             }
         }

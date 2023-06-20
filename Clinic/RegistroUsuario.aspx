@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="RegistroUsuario.aspx.cs" Inherits="Clinic.RegistroUsuario" %>
+﻿<%@ Page Title="RegistroUsuario" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="RegistroUsuario.aspx.cs" Inherits="Clinic.RegistroUsuario" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -17,8 +17,12 @@
                 <label for="txtEmail" class="d-flex form-label">Ingrese su Email</label>
                 <asp:TextBox TextMode="Email" ID="txtEmail" CssClass="form-control" placeholder="Email" runat="server" />
                 
+                <% if(idUsuarioModificar == 0)
+                    {%>
                 <label for="txtPassword" class="d-flex form-label">Ingrese su contraseña</label>
                 <asp:TextBox TextMode="Password" ID="txtPassword" CssClass="form-control" placeholder="Password" runat="server" />
+                <%  } %>
+
                 <%if (esAdmin)
                     {%>
                 <label for="txtPassword" class="d-flex form-label">Seleccione su Tipo de Usuario</label>
