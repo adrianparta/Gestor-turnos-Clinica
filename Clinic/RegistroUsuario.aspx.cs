@@ -1,15 +1,11 @@
 ﻿using Dominio;
 using Negocio;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Clinic
 {
-    public partial class RegistroUsuario : System.Web.UI.Page
+    public partial class RegistroUsuario : Page
     {
         public bool esAdmin;
         public int idUsuarioModificar = 0;
@@ -52,7 +48,7 @@ namespace Clinic
                 nuevoUsuario.TipoUsuario = (TipoUsuario) (ddlTipoUsuario.SelectedIndex + 1);
                 if (idUsuarioModificar > 0)
                 {
-                    if(UsuarioNegocio.ModificarUsuario(nuevoUsuario, idUsuarioModificar))
+                    if(UsuarioNegocio.ModificarUsuario(nuevoUsuario))
                     {
 
                     }
@@ -63,7 +59,7 @@ namespace Clinic
                 }
                 else
                 {
-                    int idUsuario = UsuarioNegocio.UsuarioAlta(nuevoUsuario, txtPassword.Text);
+                    int idUsuario = UsuarioNegocio.AltaUsuario(nuevoUsuario, txtPassword.Text);
                     if(idUsuario > 0)
                     {
                         nuevoUsuario.IdUsuario = idUsuario;
@@ -81,7 +77,7 @@ namespace Clinic
             else
             {
                 nuevoUsuario.TipoUsuario = TipoUsuario.Paciente;
-                int idUsuario = UsuarioNegocio.UsuarioAlta(nuevoUsuario, txtPassword.Text);
+                int idUsuario = UsuarioNegocio.AltaUsuario(nuevoUsuario, txtPassword.Text);
                 if (idUsuario > 0)
                 {
                     nuevoUsuario.IdUsuario = idUsuario;

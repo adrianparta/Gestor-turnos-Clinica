@@ -87,5 +87,33 @@ namespace Negocio
                 return db.Query<Especialidad>(sqlEspecialidad, new { IdDoctor = idDoctor }).ToList();
             }
         }
+        public static bool AgregarEspecialidad(Doctor doctor, Especialidad especialidad)
+        {
+            var sql = @"
+                IF NOT EXISTS ( 
+                    SELECT IdEspecialidad 
+                    FROM EspecialidadesDoctores
+                    WHERE IdEspecialidad = @IdEspecialidad
+                        AND IdDoctor = @IdDoctor
+                    )
+                BEGIN
+                    INSERT INTO EspecialidadesDoctores 
+                        (IdEspecialidad,IdDoctor)
+                    VALUES
+                        (@IdEspecialidad,@IdDoctor)
+
+                    SELECT SCOPE_IDENTITY()
+                END
+                ELSE
+                BEGIN
+	                SELECT -1
+                END
+            ";
+
+            using (var db = Coneccion())
+            {
+                return db.Execute(sql, new { especialidad.IdEspecialidad, doctor.IdDoctor }) > 0;
+            }
+        }
     }
 }

@@ -34,7 +34,7 @@ namespace Negocio
             }
         }
 
-        public static int UsuarioAlta(Usuario usuario, string contraseña)
+        public static int AltaUsuario(Usuario usuario, string contraseña)
         {
             var sqlUsuario = @"
                 IF NOT EXISTS ( 
@@ -86,7 +86,7 @@ namespace Negocio
             }
         }
 
-        public static bool ModificarUsuario(Usuario usuario, int idUsuarioViejo)
+        public static bool ModificarUsuario(Usuario usuario)
         {
             var sqlUsuario = @"
                 UPDATE Usuarios SET
@@ -104,7 +104,7 @@ namespace Negocio
                 parametros.Add("@TipoUsuario", usuario.TipoUsuario);
                 parametros.Add("@Nombre", usuario.Nombre);
                 parametros.Add("@Apellido", usuario.Apellido);
-                parametros.Add("@IdUsuario", idUsuarioViejo);
+                parametros.Add("@IdUsuario", usuario.IdUsuario);
 
                 return db.Execute(sqlUsuario, parametros) == 1;
             }
