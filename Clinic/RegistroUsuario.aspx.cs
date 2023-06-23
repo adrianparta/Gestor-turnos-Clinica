@@ -9,10 +9,13 @@ namespace Clinic
     {
         public bool esAdmin;
         public int idUsuarioModificar = 0;
+        public TipoUsuario tipoUsuarioRegistro;
         protected void Page_Load(object sender, EventArgs e)
         {
             ddlTipoUsuario.DataSource = TipoUsuarioNegocio.ObtenerTiposUsuarios();
             ddlTipoUsuario.DataBind();
+            ddlSexo.DataSource = Enum.GetValues(typeof(Sexo));
+            ddlSexo.DataBind();
             if(!(Session["Usuario"] is null))
             {
                 esAdmin = ((Usuario)Session["Usuario"]).TipoUsuario == TipoUsuario.Admin;
@@ -35,7 +38,7 @@ namespace Clinic
                 : "Login.aspx");
         }
 
-        protected void btnAceptar_Click(object sender, EventArgs e)
+        protected void btnRegistrar_Click(object sender, EventArgs e)
         {
             Usuario nuevoUsuario = new Usuario()
             {
@@ -63,9 +66,17 @@ namespace Clinic
                     if(idUsuario > 0)
                     {
                         nuevoUsuario.IdUsuario = idUsuario;
-                        if (nuevoUsuario.TipoUsuario == TipoUsuario.Doctor)
+                        switch (nuevoUsuario.TipoUsuario)
                         {
-                            // Response.Redirect("RegistroDoctor.aspx"); 
+                            case TipoUsuario.Doctor:
+                                // Response.Redirect("RegistroDoctor.aspx"); 
+                                break;
+                            case TipoUsuario.Paciente:
+                                // Response.Redirect("RegistroPaciente.aspx"); 
+                                break;
+                            default:
+                                // Registro Exitoso 
+                                break;
                         }
                     }
                     else
@@ -89,6 +100,11 @@ namespace Clinic
                     //Error
                 }
             }
+        }
+
+        protected void ddlTipoUsuario_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tipoUsuarioRegistro = (TipoUsuario)(ddlTipoUsuario.SelectedIndex + 1);
         }
     }
 }

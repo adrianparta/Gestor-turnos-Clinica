@@ -20,3 +20,13 @@ public enum Sexo
     Femenino,
     PrefiereNoDecir
 }
+public enum Dia
+{
+    Lunes,
+    Martes,
+    Miercoles,
+    Jueves,
+    Viernes,
+    Sabado,
+    Domingo
+}
