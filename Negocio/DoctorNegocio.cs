@@ -15,8 +15,6 @@ namespace Negocio
 
                 var sql= @"
                     SELECT D.IdDoctor
-                        , D.HorarioEntrada
-                        , D.HorarioSalida
                         , D.IdUsuario
                         , U.Email
                         , U.TipoUsuario
@@ -29,7 +27,7 @@ namespace Negocio
 
                 doctor = db.QueryFirstOrDefault<Doctor>(sql, new { IdDoctor = IdDoctor });
                 
-                return ObtenerTurnosYEspecialidades(doctor);
+                return ObtenerTurnosEspecialidadesHorarios(doctor);
             }
         }
         public static Doctor ObtenerDoctor(Usuario usuario)
@@ -48,25 +46,16 @@ namespace Negocio
 
                 Doctor doctor = (Doctor)usuario;
                 doctor.IdDoctor = docAux.IdDoctor;
-                doctor.HorarioEntrada = docAux.HorarioEntrada;
-                doctor.HorarioSalida = docAux.HorarioSalida;
                 
-                return ObtenerTurnosYEspecialidades(doctor);
+                return ObtenerTurnosEspecialidadesHorarios(doctor);
             }
         }
-        private static Doctor ObtenerTurnosYEspecialidades(Doctor doctor)
+        private static Doctor ObtenerTurnosEspecialidadesHorarios(Doctor doctor)
         {
             using (var db = Coneccion())
             {
-                var sqlEspecialidad = @"
-                    SELECT IdEspecialidad
-                        , Especialidad AS Nombre
-                    FROM EspecialidadesDoctores
-                    WHERE IdDoctor = @IdDoctor
-                ";
-
-                doctor.Especialidades = db.Query<Especialidad>(sqlEspecialidad, new { IdDoctor = doctor.IdDoctor }).ToList();
-
+                doctor.Especialidades = ObtenerEspecialidades(doctor.IdDoctor);
+                doctor.HorarioLaborales = ObtenerHorarios(doctor.IdDoctor);
                 doctor.Turnos = TurnoNegocio.ObtenerTurnosDeDoctor(doctor);
 
                 return doctor;
@@ -80,11 +69,25 @@ namespace Negocio
                     SELECT E.IdEspecialidad
                         , E.Especialidad AS Nombre
                     FROM Especialidades E 
-                    INNER JOIN EspecialidadesDoctores ED ON ED.IdEspecialidad = E.IdEspecialidad
                     WHERE IdDoctor = @IdDoctor
                 ";
 
                 return db.Query<Especialidad>(sqlEspecialidad, new { IdDoctor = idDoctor }).ToList();
+            }
+        }
+        internal static List<HorarioLaboral> ObtenerHorarios(int idDoctor)
+        {
+            using (var db = Coneccion())
+            {
+                var sqlHorario = @"
+                    SELECT IdDia AS Dia
+                        , HorarioEntrada 
+                        , HorarioSalida
+                    FROM Horarios  
+                    WHERE IdDoctor = @IdDoctor
+                ";
+
+                return db.Query<HorarioLaboral>(sqlHorario, new { IdDoctor = idDoctor }).ToList();
             }
         }
         public static bool AgregarEspecialidad(Doctor doctor, Especialidad especialidad)
@@ -113,6 +116,36 @@ namespace Negocio
             using (var db = Coneccion())
             {
                 return db.Execute(sql, new { especialidad.IdEspecialidad, doctor.IdDoctor }) > 0;
+            }
+        }
+        public static bool AgregarHorario(Doctor doctor, HorarioLaboral horario)
+        {
+            var sql = @"
+                IF NOT EXISTS ( 
+                    SELECT IdHorario 
+                    FROM Horarios
+                    WHERE IdDoctor = @IdDoctor
+                        AND IdDia = @Dia
+                        AND (HorarioEntrada BETWEEN @HorarioEntrada AND @HorarioSalida 
+                            OR HorarioSalida BETWEEN @HorarioEntrada AND @HorarioSalida)
+                    )
+                BEGIN
+                    INSERT INTO Horarios 
+                        (IdDoctor, IdDia, HorarioEntrada, HorarioSalida)
+                    VALUES
+                        (@IdDoctor, @Dia, @HorarioEntrada, @HorarioSalida)
+
+                    SELECT SCOPE_IDENTITY()
+                END
+                ELSE
+                BEGIN
+	                SELECT -1
+                END
+            ";
+
+            using (var db = Coneccion())
+            {
+                return db.Execute(sql, new { doctor.IdDoctor, horario.Dia, horario.HorarioEntrada, horario.HorarioSalida }) > 0;
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿public enum Estado
 {
-    Nuevo, 
+    Nuevo = 1, 
     Reprogramado, 
     NoAsistio, 
     Cancelado, 
@@ -16,13 +16,13 @@ public enum TipoUsuario
 }
 public enum Sexo
 {
-    Masculino,
+    Masculino = 1,
     Femenino,
     PrefiereNoDecir
 }
 public enum Dia
 {
-    Lunes,
+    Lunes = 1,
     Martes,
     Miercoles,
     Jueves,
