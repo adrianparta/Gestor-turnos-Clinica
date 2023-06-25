@@ -1,10 +1,40 @@
 ﻿using Dapper;
 using Dominio;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Negocio
 {
     public class EspecialidadNegocio : AccesoDatos
     {
+        public static List<Especialidad> ObtenerEspecialidades()
+        {
+            var sql = @"
+                SELECT IdEspecialidad
+                    , Especialidad AS Nombre
+                FROM Especialidades
+                ORDER BY Especialidad
+            ";
+
+            using(var db = Coneccion())
+            {
+                return db.Query<Especialidad>(sql).ToList();
+            }
+        }
+        public static Especialidad ObtenerEspecialidad(int idEspecialidad)
+        {
+            var sql = @"
+                SELECT IdEspecialidad
+                    , Especialidad AS Nombre
+                FROM Especialidades
+                WHERE IdEspecialidad = @IdEspecialidad
+            ";
+
+            using (var db = Coneccion())
+            {
+                return db.QueryFirstOrDefault<Especialidad>(sql, new { IdEspecialidad = idEspecialidad });
+            }
+        }
         public static int NuevaEspecialidad(Especialidad especialidad)
         {
             var sql = @"

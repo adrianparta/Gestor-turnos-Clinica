@@ -11,5 +11,10 @@ namespace Dominio
         public Dia Dia { get; set; }
         public int HorarioEntrada { get; set; }
         public int HorarioSalida { get; set;}
+
+        public override string ToString()
+        {
+            return $"{Dia} Desde {HorarioEntrada}:00 hasta {HorarioSalida}:00";
+        }
     }
 }
