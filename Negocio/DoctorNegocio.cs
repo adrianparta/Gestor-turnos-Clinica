@@ -175,9 +175,10 @@ namespace Negocio
                 parametros.Add("@IdUsuario", doctor.IdUsuario);
 
                 var idDoctor = db.ExecuteScalar<int>(sql, parametros);
-
+                
                 if(idDoctor > 0)
                 {
+                    doctor.IdDoctor = idDoctor;
                     foreach(var especialidad in doctor.Especialidades)
                     {
                         AgregarEspecialidad(doctor, especialidad);
