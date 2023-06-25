@@ -68,7 +68,7 @@ namespace Negocio
                 var sqlEspecialidad = @"
                     SELECT E.IdEspecialidad
                         , E.Especialidad AS Nombre
-                    FROM Especialidades E 
+                    FROM EspecialidadesDoctores E 
                     WHERE IdDoctor = @IdDoctor
                 ";
 
@@ -146,6 +146,36 @@ namespace Negocio
             using (var db = Coneccion())
             {
                 return db.Execute(sql, new { doctor.IdDoctor, horario.Dia, horario.HorarioEntrada, horario.HorarioSalida }) > 0;
+            }
+        }
+        public static int AltaDoctor(Doctor doctor)
+        {
+            var sql = @"
+                IF NOT EXISTS (
+                    SELECT IdDoctor
+                    FROM DOCTORES
+                    WHERE IdDoctor = @IdDoctor
+                    )
+                BEGIN
+                    INSERT INTO Doctores
+                        (IdDoctor, IdUsuario)
+                    VALUES
+                        (@IdDoctor, @IdUsuario)
+                    SELECT SCOPE_IDENTITY()
+                END
+                ELSE
+                BEGIN
+	                SELECT -1
+                END
+            ";
+
+            using ( var db = Coneccion())
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@IdDoctor", doctor.IdDoctor);
+                parametros.Add("@IdUsuario", doctor.IdUsuario);
+
+                return db.ExecuteScalar<int>(sql, parametros);
             }
         }
     }
