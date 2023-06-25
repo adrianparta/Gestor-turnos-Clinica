@@ -11,10 +11,20 @@ namespace Dominio
         public Dia Dia { get; set; }
         public int HorarioEntrada { get; set; }
         public int HorarioSalida { get; set;}
+        public static List<HorarioLaboral> HorarioLaboralAux = new List<HorarioLaboral>();
 
         public override string ToString()
         {
-            return $"{Dia} Desde {HorarioEntrada}:00 hasta {HorarioSalida}:00";
+            return $"{Dia}: Desde: {HorarioEntrada}:00 - Hasta: {HorarioSalida}:00";
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            HorarioLaboral aux = obj as HorarioLaboral;
+
+            return this.Dia == aux.Dia && this.HorarioEntrada == aux.HorarioEntrada && this.HorarioSalida == aux.HorarioSalida;
         }
     }
 }

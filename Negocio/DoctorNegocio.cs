@@ -154,13 +154,13 @@ namespace Negocio
                 IF NOT EXISTS (
                     SELECT IdDoctor
                     FROM DOCTORES
-                    WHERE IdDoctor = @IdDoctor
+                    WHERE IdUsuario = @IdUsuario
                     )
                 BEGIN
                     INSERT INTO Doctores
-                        (IdDoctor, IdUsuario)
+                        (IdUsuario)
                     VALUES
-                        (@IdDoctor, @IdUsuario)
+                        (@IdUsuario)
                     SELECT SCOPE_IDENTITY()
                 END
                 ELSE
@@ -172,10 +172,23 @@ namespace Negocio
             using ( var db = Coneccion())
             {
                 var parametros = new DynamicParameters();
-                parametros.Add("@IdDoctor", doctor.IdDoctor);
                 parametros.Add("@IdUsuario", doctor.IdUsuario);
 
-                return db.ExecuteScalar<int>(sql, parametros);
+                var idDoctor = db.ExecuteScalar<int>(sql, parametros);
+
+                if(idDoctor > 0)
+                {
+                    foreach(var especialidad in doctor.Especialidades)
+                    {
+                        AgregarEspecialidad(doctor, especialidad);
+                    }
+                    foreach(var horario in doctor.HorarioLaborales)
+                    {
+                        AgregarHorario(doctor, horario);
+                    }
+                }
+
+                return idDoctor;
             }
         }
     }

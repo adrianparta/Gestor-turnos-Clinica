@@ -73,7 +73,7 @@ namespace Negocio
                     WHERE IdUsuario = @IdUsuario
                     )
                 BEGIN
-                    INSERT INTO Usuarios 
+                    INSERT INTO Pacientes 
                         (Dni, Direccion, FechaNacimiento, Sexo, ObraSocial, IdUsuario)
                     VALUES
                         (@Dni, @Direccion, @FechaNacimiento, @Sexo, @ObraSocial, @IdUsuario)

@@ -1,6 +1,8 @@
 ﻿using Dominio;
 using Negocio;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -15,7 +17,8 @@ namespace Clinic
         {
             if(!IsPostBack)
             {
-                Session.Add("Usuario", new Usuario() { TipoUsuario = TipoUsuario.Admin});
+                HorarioLaboral.HorarioLaboralAux = new List<HorarioLaboral>();
+                Especialidad.EspecialidadAux = new List<Especialidad>();
                 ddlTipoUsuario.DataSource = Enum.GetValues(typeof(TipoUsuario));
                 ddlTipoUsuario.DataBind();
                 ddlSexo.DataSource = Enum.GetValues(typeof(Sexo));
@@ -27,24 +30,17 @@ namespace Clinic
                 ddlEspecialidad.DataSource = EspecialidadNegocio.ObtenerEspecialidades();
                 ddlEspecialidad.DataTextField = "Nombre";
                 ddlEspecialidad.DataValueField = "IdEspecialidad";
-                ddlEspecialidad.DataBind();
-
-                idUsuarioModificar = Convert.ToInt32(Request.QueryString["idUsuarioModificar"]);        
-                if(idUsuarioModificar > 0)
-                {
-                    var usuario = UsuarioNegocio.ObtenerUsuario(idUsuarioModificar);
-                    txtApellido.Text = usuario.Apellido;
-                    txtEmail.Text = usuario.Email;
-                    txtNombre.Text = usuario.Nombre;
-                    ddlTipoUsuario.SelectedIndex = (int) (usuario.TipoUsuario -1);
-                }                   
+                lbEspecialidad.DataTextField = "Nombre";
+                lbEspecialidad.DataValueField = "IdEspecialidad";
+                lbEspecialidad.DataBind();
+                ddlEspecialidad.DataBind();                 
             }
             if (!(Session["Usuario"] is null))
             {
                 esAdmin = ((Usuario)Session["Usuario"]).TipoUsuario == TipoUsuario.Admin;
                 if(esAdmin)
                 {
-                    tipoUsuarioRegistro = (TipoUsuario)(ddlTipoUsuario.SelectedIndex + 1);
+                    tipoUsuarioRegistro = (TipoUsuario)(ddlTipoUsuario.SelectedIndex + 1);                 
                 }
             }
         }
@@ -67,42 +63,43 @@ namespace Clinic
             if (esAdmin)
             {
                 nuevoUsuario.TipoUsuario = (TipoUsuario) (ddlTipoUsuario.SelectedIndex + 1);
-                if (idUsuarioModificar > 0)
-                {
-                    if(UsuarioNegocio.ModificarUsuario(nuevoUsuario))
-                    {
 
-                    }
-                    else
+                int idUsuario = UsuarioNegocio.AltaUsuario(nuevoUsuario, txtPassword.Text);
+                if(idUsuario > 0)
+                {
+                    nuevoUsuario.IdUsuario = idUsuario;
+                    switch (nuevoUsuario.TipoUsuario)
                     {
-                        //Error
+                        case TipoUsuario.Doctor:
+                            var nuevoDoctor = new Doctor()
+                            {
+                                IdUsuario = idUsuario,
+                                HorarioLaborales = HorarioLaboral.HorarioLaboralAux,
+                                Especialidades = Especialidad.EspecialidadAux
+                            };
+                            DoctorNegocio.AltaDoctor(nuevoDoctor);
+                            break;
+                        case TipoUsuario.Paciente:
+                            var nuevoPaciente = new Paciente()
+                            {
+                                IdUsuario = idUsuario,
+                                Dni = Convert.ToInt32(txtDniAdmin.Text),
+                                Direccion = txtDireccionAdmin.Text,
+                                ObraSocial = txtObraSocialAdmin.Text,
+                                FechaNacimiento = DateTime.Parse(txtFechaNacimientoAdmin.Text),
+                                Sexo = (Sexo)ddlSexoAdmin.SelectedIndex + 1,
+                            };
+                            PacienteNegocio.AltaPaciente(nuevoPaciente);
+                            break;
+                        default:
+                            // Registro Exitoso 
+                            break;
                     }
                 }
                 else
                 {
-                    int idUsuario = UsuarioNegocio.AltaUsuario(nuevoUsuario, txtPassword.Text);
-                    if(idUsuario > 0)
-                    {
-                        Response.Redirect("Default.aspx");
-                        nuevoUsuario.IdUsuario = idUsuario;
-                        switch (nuevoUsuario.TipoUsuario)
-                        {
-                            case TipoUsuario.Doctor:
-                                // Response.Redirect("RegistroDoctor.aspx"); 
-                                break;
-                            case TipoUsuario.Paciente:
-                                // Response.Redirect("RegistroPaciente.aspx"); 
-                                break;
-                            default:
-                                // Registro Exitoso 
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        //Error
-                    }
-                }
+                    //Error
+                }              
             }
             else
             {
@@ -110,8 +107,17 @@ namespace Clinic
                 int idUsuario = UsuarioNegocio.AltaUsuario(nuevoUsuario, txtPassword.Text);
                 if (idUsuario > 0)
                 {
-                    nuevoUsuario.IdUsuario = idUsuario;
-                    Session.Add("Usuario", nuevoUsuario);
+                    var nuevoPaciente = new Paciente()
+                    {
+                        IdUsuario = idUsuario,
+                        Dni = Convert.ToInt32(txtDni.Text),
+                        Direccion = txtDireccion.Text,
+                        ObraSocial = txtObraSocial.Text,
+                        FechaNacimiento = DateTime.Parse(txtFechaNacimiento.Text),
+                        Sexo = (Sexo)ddlSexo.SelectedIndex + 1,
+                    };
+                    PacienteNegocio.AltaPaciente(nuevoPaciente);
+                    Session.Add("Usuario", nuevoPaciente);
                     Response.Redirect("Default.aspx");
                 }
                 else
@@ -128,12 +134,54 @@ namespace Clinic
 
         protected void btnAgregarHorario_Click(object sender, EventArgs e)
         {
-
+            var horarioLaboral = new HorarioLaboral(){
+                Dia = (Dia)ddlDia.SelectedIndex + 1,
+                HorarioEntrada = Convert.ToInt32(txtHorarioEntrada.Text),
+                HorarioSalida = Convert.ToInt32(txtHorarioSalida.Text)
+            };
+            if(horarioLaboral.HorarioEntrada < horarioLaboral.HorarioSalida)
+            {
+                if(!HorarioLaboral.HorarioLaboralAux.Any(x => x.ToString() == horarioLaboral.ToString()))
+                {
+                    if(HorarioLaboral.HorarioLaboralAux.Any(x => x.Dia == horarioLaboral.Dia 
+                    && (((horarioLaboral.HorarioEntrada >= x.HorarioEntrada && horarioLaboral.HorarioEntrada < x.HorarioSalida)
+                        || (horarioLaboral.HorarioSalida > x.HorarioEntrada && horarioLaboral.HorarioSalida <= x.HorarioSalida))
+                            || (horarioLaboral.HorarioEntrada < x.HorarioEntrada && horarioLaboral.HorarioSalida > x.HorarioSalida))))
+                    {
+                        return;
+                    }
+                    HorarioLaboral.HorarioLaboralAux.Add(horarioLaboral);          
+                    lbHorario.Items.Add(horarioLaboral.ToString());
+                }
+            }
         }
 
         protected void btnAgregarEspecialidad_Click(object sender, EventArgs e)
         {
-            lbEspecialidad.Items.Add(ddlEspecialidad.SelectedItem);
+            if(!Especialidad.EspecialidadAux.Any(x => x.IdEspecialidad == Convert.ToInt32(ddlEspecialidad.SelectedValue) ))
+            {
+                lbEspecialidad.Items.Add(ddlEspecialidad.SelectedItem);
+                Especialidad.EspecialidadAux.Add(new Especialidad { IdEspecialidad = Convert.ToInt32(ddlEspecialidad.SelectedValue) });
+            }
+        }
+
+        protected void btnEliminarEspecialidad_Click(object sender, EventArgs e)
+        {
+            if (Especialidad.EspecialidadAux.Any(x => x.IdEspecialidad.ToString() == lbEspecialidad.SelectedValue))
+            {
+                Especialidad.EspecialidadAux.Remove(new Especialidad { IdEspecialidad = Convert.ToInt32(lbEspecialidad.SelectedValue) });
+                lbEspecialidad.Items.RemoveAt(lbEspecialidad.SelectedIndex);
+            }
+        }
+
+        protected void btnEliminarHorario_Click(object sender, EventArgs e)
+        {
+            if (HorarioLaboral.HorarioLaboralAux.Any(x => x.ToString() == lbHorario.SelectedValue))
+            {
+                var index = HorarioLaboral.HorarioLaboralAux.FindIndex(x => x.ToString() == lbHorario.SelectedValue);
+                HorarioLaboral.HorarioLaboralAux.RemoveAt(index);
+                lbHorario.Items.RemoveAt(lbHorario.SelectedIndex);
+            }
         }
     }
 }
