@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Dominio;
+using System.Collections.Generic;
 
 namespace Negocio
 {
@@ -83,6 +84,26 @@ namespace Negocio
             using (var db = Coneccion())
             {
                 return db.QueryFirstOrDefault<Usuario>(sqlUsuario, new { IdUsuario = idUsuario });
+            }
+        }
+        public static List<Usuario> ListarUsuario( int tipoUsuario)
+        {
+            using (var db = Coneccion())
+            {
+                List<Usuario> UsuarioLista;
+
+                var sql = @"
+                    SELECT U.IdUsuario
+                        , U.Email
+                        , U.Nombre
+                        , U.Apellido
+                    FROM Usuarios u 
+                    Where u.TipoUsuario = @TipoUsuario
+                "
+                ;
+
+                UsuarioLista = db.Query<Usuario>(sql, new { TipoUsuario = tipoUsuario }).AsList();
+                return UsuarioLista;
             }
         }
 

@@ -1,7 +1,9 @@
 ﻿using Dapper;
 using Dominio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace Negocio
 {
@@ -30,6 +32,7 @@ namespace Negocio
                 return ObtenerTurnosEspecialidadesHorarios(doctor);
             }
         }
+        
         public static Doctor ObtenerDoctor(Usuario usuario)
         {
             using (var db = Coneccion())
