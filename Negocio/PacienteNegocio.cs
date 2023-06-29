@@ -48,17 +48,11 @@ namespace Negocio
                     WHERE IdUsuario = @IdUsuario
                     ";
 
-                var pacienteAux = db.QueryFirstOrDefault<Paciente>(sql, new { IdUsuario = usuario.IdUsuario });
-                if (pacienteAux != null)
+                var paciente = db.QueryFirstOrDefault<Paciente>(sql, new { usuario.IdUsuario });
+                if (paciente != null)
                 {
-                    Paciente paciente = (Paciente)usuario;
-                    paciente.IdPaciente = pacienteAux.IdPaciente;
-                    paciente.Dni = pacienteAux.Dni;
-                    paciente.Direccion = pacienteAux.Direccion;
-                    paciente.FechaNacimiento = pacienteAux.FechaNacimiento;
-                    paciente.Sexo = pacienteAux.Sexo;
-                    paciente.ObraSocial = pacienteAux.ObraSocial;
-                    paciente.Turnos = TurnoNegocio.ObtenerTurnosDePaciente(pacienteAux);
+                    paciente += usuario;
+                    paciente.Turnos = TurnoNegocio.ObtenerTurnosDePaciente(paciente);
                     return paciente;
                 }
                 return null;

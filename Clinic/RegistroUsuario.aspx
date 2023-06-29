@@ -18,7 +18,7 @@
                 <label for="txtEmail" class="d-flex form-label">Ingrese Email</label>
                 <asp:TextBox TextMode="Email" ID="txtEmail" CssClass="form-control" placeholder="Email" runat="server" />
 
-                <% if (idUsuarioModificar == 0)
+                <% if (idUsuarioModificar == 0 || idUsuarioModificar == idUsuarioActual)
                     {%>
 
                 <label for="txtPassword" class="d-flex form-label">Ingrese contraseña</label>
@@ -26,12 +26,15 @@
 
                 <%  } %>
 
-                <%if (esAdmin)
+                <%if (esAdmin || idUsuarioModificar == idUsuarioActual)
                     {%>
                 <asp:UpdatePanel runat="server">
                     <ContentTemplate>
+                        <%if (esAdmin)
+                            { %>
                         <label for="ddlTipoUsuario" class="d-flex form-label">Seleccione Tipo de Usuario</label>
                         <asp:DropDownList CssClass="form-select" ID="ddlTipoUsuario" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlTipoUsuario_SelectedIndexChanged"></asp:DropDownList>
+                        <%} %>
                         <%  switch (tipoUsuarioRegistro)
                             {
                                 case TipoUsuario.Doctor: %>

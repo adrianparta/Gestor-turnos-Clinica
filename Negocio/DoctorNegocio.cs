@@ -39,21 +39,17 @@ namespace Negocio
             {
                 var sql = @"
                     SELECT IdDoctor
-                        , HorarioEntrada
-                        , HorarioSalida
                     FROM Doctores 
                     WHERE IdUsuario = @IdUsuario
                 ";
 
-                var docAux = db.QueryFirstOrDefault<Doctor>(sql, new { IdUsuario = usuario.IdUsuario });
-
-                Doctor doctor = (Doctor)usuario;
-                doctor.IdDoctor = docAux.IdDoctor;
+                var doctor = db.QueryFirstOrDefault<Doctor>(sql, new { usuario.IdUsuario });
+                doctor += usuario;
                 
                 return ObtenerTurnosEspecialidadesHorarios(doctor);
             }
         }
-        private static Doctor ObtenerTurnosEspecialidadesHorarios(Doctor doctor)
+        public static Doctor ObtenerTurnosEspecialidadesHorarios(Doctor doctor)
         {
             using (var db = Coneccion())
             {
@@ -71,7 +67,8 @@ namespace Negocio
                 var sqlEspecialidad = @"
                     SELECT E.IdEspecialidad
                         , E.Especialidad AS Nombre
-                    FROM EspecialidadesDoctores E 
+                    FROM Especialidades E 
+                    INNER JOIN EspecialidadesDoctores ED ON E.IdEspecialidad = ED.IdEspecialidad
                     WHERE IdDoctor = @IdDoctor
                 ";
 

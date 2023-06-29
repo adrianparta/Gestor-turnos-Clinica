@@ -12,33 +12,82 @@ namespace Clinic
     {
         public bool esAdmin;
         public int idUsuarioModificar = 0;
+        public int idUsuarioActual = -1;
         public TipoUsuario tipoUsuarioRegistro;
         protected void Page_Load(object sender, EventArgs e)
         {
+            idUsuarioModificar = Convert.ToInt32(Request.QueryString["IdUsuario"]);
             if(!IsPostBack)
             {
+
                 HorarioLaboral.HorarioLaboralAux = new List<HorarioLaboral>();
                 Especialidad.EspecialidadAux = new List<Especialidad>();
+
                 ddlTipoUsuario.DataSource = Enum.GetValues(typeof(TipoUsuario));
                 ddlTipoUsuario.DataBind();
+
                 ddlSexo.DataSource = Enum.GetValues(typeof(Sexo));
                 ddlSexo.DataBind();
+
                 ddlSexoAdmin.DataSource = Enum.GetValues(typeof(Sexo));
                 ddlSexoAdmin.DataBind();
+
                 ddlDia.DataSource = Enum.GetValues(typeof(Dia));
                 ddlDia.DataBind();
+
                 ddlEspecialidad.DataSource = EspecialidadNegocio.ObtenerEspecialidades();
                 ddlEspecialidad.DataTextField = "Nombre";
                 ddlEspecialidad.DataValueField = "IdEspecialidad";
+                ddlEspecialidad.DataBind();
+
                 lbEspecialidad.DataTextField = "Nombre";
                 lbEspecialidad.DataValueField = "IdEspecialidad";
                 lbEspecialidad.DataBind();
-                ddlEspecialidad.DataBind();                 
+
+                if (idUsuarioModificar > 0)
+                {
+                    var usuario = UsuarioNegocio.ObtenerUsuario(idUsuarioModificar);
+                    if(!(usuario is null) && !(Session["Usuario"] is null))
+                    {
+                        btnRegistrar.Text = "Guardar Cambios";
+                        txtNombre.Text = usuario.Nombre;
+                        txtApellido.Text = usuario.Apellido;
+                        txtEmail.Text = usuario.Email;
+                        ddlTipoUsuario.SelectedIndex = (int)usuario.TipoUsuario - 1;
+                        switch (usuario.TipoUsuario)
+                        {
+                            case TipoUsuario.Doctor:
+                                foreach(var especialidad in ((Doctor)usuario).Especialidades)
+                                {
+                                    lbEspecialidad.Items.Add(especialidad.Nombre);
+                                }
+                                Especialidad.EspecialidadAux = ((Doctor)usuario).Especialidades;
+                                foreach (var horario in ((Doctor)usuario).HorarioLaborales)
+                                {
+                                    lbHorario.Items.Add(horario.ToString());
+                                }
+                                HorarioLaboral.HorarioLaboralAux = ((Doctor)usuario).HorarioLaborales;
+                                break;
+
+                            case TipoUsuario.Paciente:
+                                txtDniAdmin.Text = ((Paciente)usuario).Dni.ToString();
+                                txtDireccionAdmin.Text = ((Paciente)usuario).Direccion;
+                                txtObraSocialAdmin.Text = ((Paciente)usuario).ObraSocial;
+                                txtFechaNacimientoAdmin.Text = ((Paciente)usuario).FechaNacimiento.ToString("yyyy-MM-dd");
+                                ddlSexoAdmin.SelectedIndex = (int)((Paciente)usuario).Sexo - 1;
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
+                }
             }
             if (!(Session["Usuario"] is null))
             {
                 esAdmin = ((Usuario)Session["Usuario"]).TipoUsuario == TipoUsuario.Admin;
-                if(esAdmin)
+                idUsuarioActual = ((Usuario)Session["Usuario"]).IdUsuario;
+                if (esAdmin)
                 {
                     tipoUsuarioRegistro = (TipoUsuario)(ddlTipoUsuario.SelectedIndex + 1);                 
                 }

@@ -15,5 +15,20 @@ namespace Dominio
                 return Turnos.Select(t => t.Paciente).ToList();
             }
         }
+        /// <summary>
+        /// Se le agregan al Doctor sus datos de usuario.
+        /// </summary>
+        /// <param name="doctor"></param>
+        /// <param name="usuario"></param>
+        /// <returns></returns>
+        public static Doctor operator +(Doctor doctor, Usuario usuario)
+        {
+            doctor.Nombre = usuario.Nombre;
+            doctor.Apellido = usuario.Apellido;
+            doctor.Email = usuario.Email;
+            doctor.TipoUsuario = usuario.TipoUsuario;
+
+            return doctor;
+        }
     }
 }

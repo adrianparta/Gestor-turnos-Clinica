@@ -22,16 +22,8 @@ namespace Negocio
             using (var db = Coneccion())
             {
                 var usuario = db.QueryFirstOrDefault<Usuario>(sqlUsuario, new { Email = email, Contraseña = contraseña});
-                
-                if (!(usuario is null))
-                {
-                    if(usuario.TipoUsuario == TipoUsuario.Doctor)
-                    {
-                        return DoctorNegocio.ObtenerDoctor(usuario);
-                    }
-                }
 
-                return usuario;
+                return ObtenerDatosComplementarios(usuario);
             }
         }
 
@@ -83,7 +75,9 @@ namespace Negocio
 
             using (var db = Coneccion())
             {
-                return db.QueryFirstOrDefault<Usuario>(sqlUsuario, new { IdUsuario = idUsuario });
+                var usuario = db.QueryFirstOrDefault<Usuario>(sqlUsuario, new { IdUsuario = idUsuario });
+
+                return ObtenerDatosComplementarios(usuario);
             }
         }
         public static List<Usuario> ListarUsuario( int tipoUsuario)
@@ -142,6 +136,22 @@ namespace Negocio
             {
                 return db.Execute(sqlUsuario, new { IdUsuario = idUsuario }) == 1;
             }
+        }
+
+        private static Usuario ObtenerDatosComplementarios(Usuario usuario)
+        {
+            if (!(usuario is null))
+            {
+                if (usuario.TipoUsuario == TipoUsuario.Doctor)
+                {
+                    return DoctorNegocio.ObtenerDoctor(usuario);
+                }
+                if (usuario.TipoUsuario == TipoUsuario.Paciente)
+                {
+                    return PacienteNegocio.ObtenerPaciente(usuario);
+                }
+            }
+            return usuario;
         }
     }
 }
