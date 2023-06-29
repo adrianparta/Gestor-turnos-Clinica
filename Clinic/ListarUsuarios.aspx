@@ -4,7 +4,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:DropDownList CssClass="form-select" ID="ddlTipoUsuario" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlTipoUsuario_SelectedIndexChanged"></asp:DropDownList>
-    <asp:DropDownList CssClass="form-select" ID="ddlAux" runat="server" AutoPostBack="true"></asp:DropDownList>
     <ul class="list-group-item ">
         <asp:Repeater runat="server" ID="repeaterLista">
             <ItemTemplate>
@@ -14,8 +13,8 @@
                         <%#Eval("Email")%>
 
                     </div>
-                    <asp:Button ID="BotonModificar" cssClass="btn btn-primary" Text="Modificar" runat="server" CommandArgument='<%#Eval("IdUsuario") %>' CommandName="Id"/>
-                    <asp:Button ID="BotonELiminar" cssClass="btn btn-primary" Text="Eliminar" runat="server" CommandArgument='<%#Eval("IdUsuario") %>' CommandName="Id"/>
+                    <asp:Button ID="BotonModificar" cssClass="btn btn-primary" Text="Modificar" runat="server" CommandArgument='<%#Eval("IdUsuario") %>' CommandName="Id" OnClick="BotonModificar_Click"/>
+                    <asp:Button ID="BotonELiminar" cssClass="btn btn-primary" Text="Eliminar" runat="server" CommandArgument='<%#Eval("IdUsuario") %>' CommandName="Id" OnClick="BotonELiminar_Click"/>
 
                 </li>
             </ItemTemplate>

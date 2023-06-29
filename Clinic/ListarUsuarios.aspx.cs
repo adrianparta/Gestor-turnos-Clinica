@@ -24,10 +24,19 @@ namespace Clinic
        
         protected void ddlTipoUsuario_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ddlAux.DataSource = UsuarioNegocio.ListarUsuario(ddlTipoUsuario.SelectedIndex);
-            ddlAux.DataTextField = "Nombre";
-            ddlAux.DataValueField = "IdUsuario";
-            ddlAux.DataBind();
+            repeaterLista.DataSource = UsuarioNegocio.ListarUsuario(ddlTipoUsuario.SelectedIndex);
+            repeaterLista.DataBind();
+        }
+
+        protected void BotonModificar_Click(object sender, EventArgs e)
+        {
+            string id = ((Button)sender).CommandArgument;
+            Response.Redirect("RegistroUsuario.aspx?IdUsuario=" + id, false);
+        }
+
+        protected void BotonELiminar_Click(object sender, EventArgs e)
+        {
+            //poner usuario.activo = 0
         }
     }
 }
