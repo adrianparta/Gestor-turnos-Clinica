@@ -87,10 +87,7 @@ namespace Clinic
             {
                 esAdmin = ((Usuario)Session["Usuario"]).TipoUsuario == TipoUsuario.Admin;
                 idUsuarioActual = ((Usuario)Session["Usuario"]).IdUsuario;
-                if (esAdmin)
-                {
-                    tipoUsuarioRegistro = (TipoUsuario)(ddlTipoUsuario.SelectedIndex + 1);                 
-                }
+                tipoUsuarioRegistro = (TipoUsuario)(ddlTipoUsuario.SelectedIndex + 1);                 
             }
         }
 

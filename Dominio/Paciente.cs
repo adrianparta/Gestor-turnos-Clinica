@@ -21,6 +21,7 @@ namespace Dominio
         /// <returns></returns>
         public static Paciente operator + (Paciente paciente, Usuario usuario)
         {
+            paciente.IdUsuario = usuario.IdUsuario;
             paciente.Nombre = usuario.Nombre;
             paciente.Apellido = usuario.Apellido;
             paciente.Email = usuario.Email;

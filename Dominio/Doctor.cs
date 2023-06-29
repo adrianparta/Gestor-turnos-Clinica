@@ -23,6 +23,7 @@ namespace Dominio
         /// <returns></returns>
         public static Doctor operator +(Doctor doctor, Usuario usuario)
         {
+            doctor.IdUsuario = usuario.IdUsuario;
             doctor.Nombre = usuario.Nombre;
             doctor.Apellido = usuario.Apellido;
             doctor.Email = usuario.Email;
