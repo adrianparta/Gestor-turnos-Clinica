@@ -96,19 +96,19 @@ namespace Negocio
         public static bool ModificarPaciente(Paciente paciente)
         {
             var sql = @"
-                UPDATE Usuarios SET
+                UPDATE Pacientes SET
                     Dni = @Dni
                     , Direccion = @Direccion
                     , FechaNacimiento = @FechaNacimiento
                     , Sexo = @Sexo
                     , ObraSocial = @ObraSocial
-                WHERE IdPaciente = @IdPaciente
+                WHERE IdUsuario = @IdUsuario
             ";
 
             using (var db = Coneccion())
             {
                 var parametros = new DynamicParameters();
-                parametros.Add("@IdPaciente", paciente.IdPaciente);
+                parametros.Add("@IdUsuario", paciente.IdUsuario);
                 parametros.Add("@Dni", paciente.Dni);
                 parametros.Add("@Direccion", paciente.Direccion);
                 parametros.Add("@FechaNacimiento", paciente.FechaNacimiento);

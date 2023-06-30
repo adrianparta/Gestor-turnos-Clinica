@@ -102,20 +102,24 @@ namespace Negocio
             }
         }
 
-        public static bool ModificarUsuario(Usuario usuario)
+        public static bool ModificarUsuario(Usuario usuario, string password = "")
         {
+            var parametros = new DynamicParameters();
             var sqlUsuario = @"
                 UPDATE Usuarios SET
                     Email = @Email
                     , TipoUsuario = @TipoUsuario
                     , Nombre = @Nombre
-                    , Apellido = @Apellido
-                WHERE IdUsuario = @IdUsuario
+                    , Apellido = @Apellido                
             ";
-
+            if(!string.IsNullOrEmpty(password))
+            {
+                sqlUsuario += ", Contraseña = @Password ";
+                parametros.Add("@Password", password);
+            }
+            sqlUsuario += " WHERE IdUsuario = @IdUsuario ";
             using (var db = Coneccion())
             {
-                var parametros = new DynamicParameters();
                 parametros.Add("@Email", usuario.Email);
                 parametros.Add("@TipoUsuario", usuario.TipoUsuario);
                 parametros.Add("@Nombre", usuario.Nombre);

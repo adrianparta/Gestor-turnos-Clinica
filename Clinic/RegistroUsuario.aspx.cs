@@ -87,7 +87,7 @@ namespace Clinic
             {
                 esAdmin = ((Usuario)Session["Usuario"]).TipoUsuario == TipoUsuario.Admin;
                 idUsuarioActual = ((Usuario)Session["Usuario"]).IdUsuario;
-                tipoUsuarioRegistro = (TipoUsuario)(ddlTipoUsuario.SelectedIndex + 1);                 
+                tipoUsuarioRegistro = (TipoUsuario)(ddlTipoUsuario.SelectedIndex + 1);        
             }
         }
 
@@ -106,46 +106,79 @@ namespace Clinic
                 Apellido = txtApellido.Text,
                 Email = txtEmail.Text,
             };
-            if (esAdmin)
+            if (esAdmin || idUsuarioModificar == idUsuarioActual)
             {
                 nuevoUsuario.TipoUsuario = (TipoUsuario) (ddlTipoUsuario.SelectedIndex + 1);
-
-                int idUsuario = UsuarioNegocio.AltaUsuario(nuevoUsuario, txtPassword.Text);
-                if(idUsuario > 0)
+                Doctor nuevoDoctor = new Doctor();
+                Paciente nuevoPaciente = new Paciente();
+                switch (nuevoUsuario.TipoUsuario)
                 {
-                    nuevoUsuario.IdUsuario = idUsuario;
+                    case TipoUsuario.Doctor:
+                        nuevoDoctor = new Doctor()
+                        {
+                            HorarioLaborales = HorarioLaboral.HorarioLaboralAux,
+                            Especialidades = Especialidad.EspecialidadAux
+                        };
+                        break;
+                    case TipoUsuario.Paciente:
+                        nuevoPaciente = new Paciente()
+                        {
+                            Dni = Convert.ToInt32(txtDniAdmin.Text),
+                            Direccion = txtDireccionAdmin.Text,
+                            ObraSocial = txtObraSocialAdmin.Text,
+                            FechaNacimiento = DateTime.Parse(txtFechaNacimientoAdmin.Text),
+                            Sexo = (Sexo)ddlSexoAdmin.SelectedIndex + 1,
+                        };
+                        break;
+                    default:
+                        // Registro Exitoso 
+                        break;
+                }
+                if(btnRegistrar.Text == "Registrar")
+                {
+                    int idUsuario = UsuarioNegocio.AltaUsuario(nuevoUsuario, txtPassword.Text);
+                    if(idUsuario > 0)
+                    {
+                        nuevoUsuario.IdUsuario = idUsuario;
+                        switch (nuevoUsuario.TipoUsuario)
+                        {
+                            case TipoUsuario.Doctor:
+                                nuevoDoctor.IdUsuario = idUsuario;
+                                DoctorNegocio.AltaDoctor(nuevoDoctor);
+                                break;
+                            case TipoUsuario.Paciente:
+                                nuevoPaciente.IdUsuario = idUsuario;
+                                PacienteNegocio.AltaPaciente(nuevoPaciente);
+                                break;
+                            default:
+                                // Registro Exitoso 
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        //Error
+                    }              
+                }
+                else
+                {
+                    nuevoUsuario.IdUsuario = idUsuarioModificar;
+                    UsuarioNegocio.ModificarUsuario(nuevoUsuario, txtPassword.Text);
                     switch (nuevoUsuario.TipoUsuario)
                     {
                         case TipoUsuario.Doctor:
-                            var nuevoDoctor = new Doctor()
-                            {
-                                IdUsuario = idUsuario,
-                                HorarioLaborales = HorarioLaboral.HorarioLaboralAux,
-                                Especialidades = Especialidad.EspecialidadAux
-                            };
-                            DoctorNegocio.AltaDoctor(nuevoDoctor);
+                            nuevoDoctor.IdUsuario = idUsuarioModificar;
+                            DoctorNegocio.ModificarDoctor(nuevoDoctor);
                             break;
                         case TipoUsuario.Paciente:
-                            var nuevoPaciente = new Paciente()
-                            {
-                                IdUsuario = idUsuario,
-                                Dni = Convert.ToInt32(txtDniAdmin.Text),
-                                Direccion = txtDireccionAdmin.Text,
-                                ObraSocial = txtObraSocialAdmin.Text,
-                                FechaNacimiento = DateTime.Parse(txtFechaNacimientoAdmin.Text),
-                                Sexo = (Sexo)ddlSexoAdmin.SelectedIndex + 1,
-                            };
-                            PacienteNegocio.AltaPaciente(nuevoPaciente);
+                            nuevoPaciente.IdUsuario = idUsuarioModificar;
+                            PacienteNegocio.ModificarPaciente(nuevoPaciente);
                             break;
                         default:
                             // Registro Exitoso 
                             break;
                     }
                 }
-                else
-                {
-                    //Error
-                }              
             }
             else
             {

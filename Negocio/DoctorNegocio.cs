@@ -192,5 +192,69 @@ namespace Negocio
                 return idDoctor;
             }
         }
+        public static bool ModificarDoctor (Doctor doctor)
+        {
+            var sql = @"
+                SELECT IdDoctor 
+                FROM Doctores 
+                WHERE IdUsuario = @IdUsuario";
+            using ( var db = Coneccion())
+            {
+                doctor.IdDoctor = db.ExecuteScalar<int>(sql, new { doctor.IdUsuario });
+            }
+            var resEspecialidades = ModificarEspecialidadesDelDoctor(doctor);
+            var resHorarios = ModificarHorariosDelDoctor(doctor);
+
+            return resEspecialidades && resHorarios;
+        }
+        private static bool ModificarEspecialidadesDelDoctor(Doctor doctor)
+        {
+            var especialidadAgregadas = 0;
+
+            var sql = @"
+                DELETE FROM EspecialidadesDoctor
+                WHERE IdDoctor = @IdDotor
+            ";
+
+            using(var db = Coneccion())
+            {
+                db.Execute(sql, new { doctor.IdDoctor });
+            }
+
+            foreach(var especialidad in doctor.Especialidades)
+            {
+                if(AgregarEspecialidad(doctor, especialidad))
+                {
+                    especialidadAgregadas++;
+                }
+            }
+
+            return doctor.Especialidades.Count == especialidadAgregadas;
+        }
+
+        private static bool ModificarHorariosDelDoctor(Doctor doctor)
+        {
+            var horariosAgregados = 0;
+
+            var sql = @"
+                DELETE FROM Horarios
+                WHERE IdDoctor = @IdDotor
+            ";
+
+            using (var db = Coneccion())
+            {
+                db.Execute(sql, new { doctor.IdDoctor });
+            }
+
+            foreach (var horario in doctor.HorarioLaborales)
+            {
+                if (AgregarHorario(doctor, horario))
+                {
+                    horariosAgregados++;
+                }
+            }
+
+            return doctor.HorarioLaborales.Count == horariosAgregados;
+        }
     }
 }
