@@ -92,7 +92,8 @@ namespace Negocio
                         , U.Nombre
                         , U.Apellido
                     FROM Usuarios u 
-                    Where u.TipoUsuario = @TipoUsuario
+                    Where u.TipoUsuario = @TipoUsuario 
+                    and u.Activo = 1
                 "
                 ;
 
@@ -128,7 +129,8 @@ namespace Negocio
         public static bool BorrarUsuario(int idUsuario)
         {
             var sqlUsuario = @"
-                DELETE FROM Usuarios 
+                UPDATE Usuarios
+                SET Activo = 0
                 WHERE IdUsuario = @IdUsuario
             ";
 

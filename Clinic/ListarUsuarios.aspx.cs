@@ -37,6 +37,10 @@ namespace Clinic
         protected void BotonELiminar_Click(object sender, EventArgs e)
         {
             //poner usuario.activo = 0
+            int id = int.Parse(((Button)sender).CommandArgument);
+            UsuarioNegocio.BorrarUsuario(id);
+            repeaterLista.DataSource = UsuarioNegocio.ListarUsuario(ddlTipoUsuario.SelectedIndex);
+            repeaterLista.DataBind();
         }
     }
 }
