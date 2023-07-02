@@ -2,6 +2,7 @@
 using Dominio;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -212,13 +213,13 @@ namespace Negocio
             var especialidadAgregadas = 0;
 
             var sql = @"
-                DELETE FROM EspecialidadesDoctor
+                DELETE FROM EspecialidadesDoctores
                 WHERE IdDoctor = @IdDotor
             ";
 
             using(var db = Coneccion())
             {
-                db.Execute(sql, new { doctor.IdDoctor });
+                db.Execute(sql, new { IdDotor = doctor.IdDoctor }, commandType: CommandType.Text);
             }
 
             foreach(var especialidad in doctor.Especialidades)
@@ -243,7 +244,7 @@ namespace Negocio
 
             using (var db = Coneccion())
             {
-                db.Execute(sql, new { doctor.IdDoctor });
+                db.Execute(sql, new { IdDotor = doctor.IdDoctor }, commandType: CommandType.Text);
             }
 
             foreach (var horario in doctor.HorarioLaborales)

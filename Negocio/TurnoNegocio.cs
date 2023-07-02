@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Dominio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,6 +33,7 @@ namespace Negocio
                 INNER JOIN Usuarios U ON P.IdUsuario = U.IdUsuario
                 INNER JOIN Especialidades E ON T.IdEspecialidad = E.IdEspecialidad
                 WHERE IdDoctor = @IdDoctor
+                    AND T.Horario >= @DiaActual
             ";
 
             using(var db = Coneccion())
@@ -42,7 +44,7 @@ namespace Negocio
                     turno.Doctor = doctor;
                     turno.Paciente = paciente;
                     return turno;
-                }, new { doctor.IdDoctor }, splitOn: "IdEspecialidad,IdPaciente").ToList();
+                }, new { doctor.IdDoctor, DiaActual = DateTime.Today }, splitOn: "IdEspecialidad,IdPaciente").ToList();
             }
         }
         public static List<Turno> ObtenerTurnosDePaciente(Paciente paciente)

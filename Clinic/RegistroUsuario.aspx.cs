@@ -57,15 +57,11 @@ namespace Clinic
                         switch (usuario.TipoUsuario)
                         {
                             case TipoUsuario.Doctor:
-                                foreach(var especialidad in ((Doctor)usuario).Especialidades)
-                                {
-                                    lbEspecialidad.Items.Add(especialidad.Nombre);
-                                }
+                                lbEspecialidad.DataSource = ((Doctor)usuario).Especialidades;
+                                lbEspecialidad.DataBind();
                                 Especialidad.EspecialidadAux = ((Doctor)usuario).Especialidades;
-                                foreach (var horario in ((Doctor)usuario).HorarioLaborales)
-                                {
-                                    lbHorario.Items.Add(horario.ToString());
-                                }
+                                lbHorario.DataSource = ((Doctor)usuario).HorarioLaborales;
+                                lbHorario.DataBind();
                                 HorarioLaboral.HorarioLaboralAux = ((Doctor)usuario).HorarioLaborales;
                                 break;
 

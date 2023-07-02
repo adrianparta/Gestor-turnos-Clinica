@@ -29,5 +29,9 @@ namespace Dominio
 
             return paciente;
         }
+        public override string ToString()
+        {
+            return $"{Apellido}, {Nombre}";
+        }
     }
 }

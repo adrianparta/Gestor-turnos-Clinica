@@ -16,5 +16,9 @@ namespace Dominio
 
             return this.IdEspecialidad == aux.IdEspecialidad;
         }
+        public override string ToString()
+        {
+            return Nombre;
+        }
     }
 }
