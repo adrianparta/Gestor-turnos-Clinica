@@ -81,5 +81,46 @@ namespace Negocio
                 }, new { paciente.IdPaciente }, splitOn: "IdEspecialidad,IdDoctor").ToList();
             }
         }
+
+        public static List<Turno> ObtenerTurnosDeDoctor(Doctor doctor, DateTime fechaInicio, DateTime fechaFin)
+        {
+            var sql = @"
+                SELECT  T.IdTurno
+                    , T.Horario 
+                    , T.Causas 
+                    , T.Observaciones 
+                    , T.Estado 
+                    , T.IdEspecialidad 
+                    , E.Especialidad AS Nombre
+                    , T.IdPaciente 
+                    , U.Nombre  
+                    , U.Apellido  
+                    , U.Email
+                    , U.TipoUsuario
+                    , P.Dni  
+                    , P.Direccion  
+                    , P.FechaNacimiento  
+                    , P.Sexo  
+                    , P.ObraSocial 
+                FROM Turnos T
+                INNER JOIN Pacientes P ON P.IdPaciente = T.IdPaciente
+                INNER JOIN Usuarios U ON P.IdUsuario = U.IdUsuario
+                INNER JOIN Especialidades E ON T.IdEspecialidad = E.IdEspecialidad
+                WHERE IdDoctor = @IdDoctor
+                    AND T.Horario >= @FechaInicio
+                    AND T.Horario < @FechaFin
+            ";
+
+            using (var db = Coneccion())
+            {
+                return db.Query<Turno, Especialidad, Paciente, Turno>(sql, (turno, especialidad, paciente) =>
+                {
+                    turno.Especialidad = especialidad;
+                    turno.Doctor = doctor;
+                    turno.Paciente = paciente;
+                    return turno;
+                }, new { doctor.IdDoctor, FechaInicio = fechaInicio.Date, FechaFin = fechaFin.Date }, splitOn: "IdEspecialidad,IdPaciente").ToList();
+            }
+        }
     }
 }

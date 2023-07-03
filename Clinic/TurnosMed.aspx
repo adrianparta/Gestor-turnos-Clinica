@@ -10,12 +10,12 @@
         <div class="row">
             <div class="col-1"></div>
             <div class="col-3">
-                <asp:Button Text="<-- Semana Anterior" CssClass="btn btn-primary" runat="server" />
+                <asp:Button Text="<-- Semana Anterior" ID="btnSemanaAnterior" CssClass="btn btn-primary" OnClick="btnSemanaAnterior_Click" runat="server" />
             </div>
             <div class="col-4"></div>
             <div class="col-1"></div>
             <div class="col-3">
-                <asp:Button Text="Semana Siguiente -->" CssClass="btn btn-primary" runat="server" />
+                <asp:Button Text="Semana Siguiente -->" ID="btnSemanaSiguiente" CssClass="btn btn-primary" OnClick="btnSemanaSiguiente_Click" runat="server" />
             </div>
         </div>
         <br />
@@ -23,85 +23,21 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="row row-cols-md-4 g-4">
-                    <!--
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header">
-                                <asp:Label ID="lblTurnos0" runat="server" />
+                    <asp:Repeater runat="server" ID="repeaterTurnos">
+                        <ItemTemplate>
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <asp:Label Text='<%#Eval("Fecha")%>' runat="server" />
+                                    </div>
+                                    <div class="card-body">
+                                        <asp:ListBox CssClass="form-select" Rows="10" ID="lbTurnos" DataSource='<%#Eval("Turnos")%>' DataTextField="TurnoEnTexto" DataValueField="IdTurno" OnSelectedIndexChanged="lbTurnos_SelectedIndexChanged" AutoPostBack="true" runat="server">
+                                        </asp:ListBox>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <asp:ListBox CssClass="form-select" Rows="10" ID="lbTurnos0" runat="server">
-                                </asp:ListBox>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header">
-                                <asp:Label ID="lblTurnos1" runat="server" />
-                            </div>
-                            <div class="card-body">
-                                <asp:ListBox CssClass="form-select" Rows="10" ID="lbTurnos1" runat="server">
-                                </asp:ListBox>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header">
-                                <asp:Label ID="lblTurnos2" runat="server" />
-                            </div>
-                            <div class="card-body">
-                                <asp:ListBox CssClass="form-select" Rows="10" ID="lbTurnos2" runat="server">
-                                </asp:ListBox>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header">
-                                <asp:Label ID="lblTurnos3" runat="server" />
-                            </div>
-                            <div class="card-body">
-                                <asp:ListBox CssClass="form-select" Rows="10" ID="lbTurnos3" runat="server">
-                                </asp:ListBox>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header">
-                                <asp:Label ID="lblTurnos4" runat="server" />
-                            </div>
-                            <div class="card-body">
-                                <asp:ListBox CssClass="form-select" Rows="10" ID="lbTurnos4" runat="server">
-                                </asp:ListBox>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header">
-                                <asp:Label ID="lblTurnos5" runat="server" />
-                            </div>
-                            <div class="card-body">
-                                <asp:ListBox CssClass="form-select" Rows="10" ID="lbTurnos5" runat="server">
-                                </asp:ListBox>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header">
-                                <asp:Label ID="lblTurnos6" runat="server" />
-                            </div>
-                            <div class="card-body">
-                                <asp:ListBox CssClass="form-select" Rows="10" ID="lbTurnos6" runat="server">
-                                </asp:ListBox>
-                            </div>
-                        </div>
-                    </div>
-                    -->
+                        </ItemTemplate>
+                    </asp:Repeater>
                 </div>
             </div>
         </div>
@@ -122,7 +58,7 @@
                 <div class="row">
                     <div class="col-9"></div>
                     <div class="col-2">
-                        <asp:Button Text="Guardar Observacion" ID="btnGuardarObservacion" CssClass="btn btn-primary" runat="server" />
+                        <asp:Button Text="Guardar Observacion" ID="btnGuardarObservacion" CssClass="btn btn-primary" OnClick="btnGuardarObservacion_Click" runat="server" />
                     </div>
                 </div>
             </div>
@@ -131,7 +67,7 @@
                 <div class="row">
                     <div class="col-1"></div>
                     <div class="col-5">
-                        <asp:TextBox CssClass="form-control" ID="txtDia" TextMode="Date" runat="server" />
+                        <asp:TextBox CssClass="form-control" ID="txtDia" OnTextChanged="txtDia_TextChanged" TextMode="Date" runat="server" />
                     </div>
                     <div class="col-5">
                         <asp:DropDownList CssClass="form-select" ID="ddlHorario" runat="server"></asp:DropDownList>
@@ -141,7 +77,7 @@
                 <div class="row">
                     <div class="col-7"></div>
                     <div class="col-3">
-                        <asp:Button Text="Reasignar" ID="btnReasignarTurno" CssClass="btn btn-primary" runat="server" />
+                        <asp:Button Text="Reasignar" ID="btnReasignarTurno" OnClick="btnReasignarTurno_Click" CssClass="btn btn-primary" runat="server" />
                     </div>
                 </div>
             </div>

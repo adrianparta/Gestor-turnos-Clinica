@@ -257,5 +257,22 @@ namespace Negocio
 
             return doctor.HorarioLaborales.Count == horariosAgregados;
         }
+
+        public static List<HorarioLaboral> ObtenerHorariosDelDia(Doctor doctor, Dia dia)
+        {
+            var sql = @"
+                SELECT IdDia
+                    , HorarioEntrada
+                    , HorarioSalida
+                FROM Horarios
+                WHERE IdDoctor = @IdDoctor 
+                    AND IdDia = @Dia
+            ";
+
+            using (var db = Coneccion())
+            {
+                return db.Query<HorarioLaboral>(sql, new { IdDoctor = doctor.IdDoctor, Dia = dia }).ToList();
+            }
+        }
     }
 }

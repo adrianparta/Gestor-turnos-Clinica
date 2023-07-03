@@ -1,8 +1,10 @@
 ﻿using Dominio;
+using Negocio;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -17,70 +19,107 @@ namespace Clinic
             doctor = (Doctor)Session["Usuario"];
             if(!IsPostBack)
             {
-                List<List<Turno>> turnoPorDia = new List<List<Turno>>();
+                var turnoPorDia = new List<TurnoMedDto>();
                 for(int i = 0; i < 7; i++)
                 {
-                    turnoPorDia.Add(new List<Turno>());
+                    turnoPorDia.Add(new TurnoMedDto()
+                    {
+                        Fecha = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(DateTime.Today.AddDays(i).ToString("dddd dd/MM")),
+                        Turnos = new List<Turno>()
+                    });
                 }
                 var hoy = DateTime.Today;
                 foreach (var turno in doctor.Turnos)
                 {
                     if(turno.Horario == hoy)
                     {
-                        turnoPorDia[0].Add(turno);
+                        turnoPorDia[0].Turnos.Add(turno);
                     }
                     else if (turno.Horario.Date == hoy.AddDays(1))
                     {
-                        turnoPorDia[1].Add(turno);
+                        turnoPorDia[1].Turnos.Add(turno);
                     }
                     else if (turno.Horario.Date == hoy.AddDays(2))
                     {
-                        turnoPorDia[2].Add(turno);
+                        turnoPorDia[2].Turnos.Add(turno);
                     }
                     else if (turno.Horario.Date == hoy.AddDays(3))
                     {
-                        turnoPorDia[3].Add(turno);
+                        turnoPorDia[3].Turnos.Add(turno);
                     }
                     else if (turno.Horario.Date == hoy.AddDays(4))
                     {
-                        turnoPorDia[4].Add(turno);
+                        turnoPorDia[4].Turnos.Add(turno);
                     }
                     else if (turno.Horario.Date == hoy.AddDays(5))
                     {
-                        turnoPorDia[5].Add(turno);
+                        turnoPorDia[5].Turnos.Add(turno);
                     }
                     else if (turno.Horario.Date == hoy.AddDays(6))
                     {
-                        turnoPorDia[6].Add(turno);
+                        turnoPorDia[6].Turnos.Add(turno);
                     }
                     else
                     {
                         break;
                     }
                 }
-                lblTurnos0.Text = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(DateTime.Today.ToString("dddd dd/MM"));
-                lblTurnos1.Text = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(DateTime.Today.AddDays(1).ToString("dddd dd/MM"));
-                lblTurnos2.Text = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(DateTime.Today.AddDays(2).ToString("dddd dd/MM"));
-                lblTurnos3.Text = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(DateTime.Today.AddDays(3).ToString("dddd dd/MM"));
-                lblTurnos4.Text = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(DateTime.Today.AddDays(4).ToString("dddd dd/MM"));
-                lblTurnos5.Text = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(DateTime.Today.AddDays(5).ToString("dddd dd/MM"));
-                lblTurnos6.Text = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(DateTime.Today.AddDays(6).ToString("dddd dd/MM"));
-
-                lbTurnos0.DataSource = turnoPorDia[0];
-                lbTurnos0.DataBind();
-                lbTurnos1.DataSource = turnoPorDia[1];
-                lbTurnos1.DataBind();
-                lbTurnos2.DataSource = turnoPorDia[2];
-                lbTurnos2.DataBind();
-                lbTurnos3.DataSource = turnoPorDia[3];
-                lbTurnos3.DataBind();
-                lbTurnos4.DataSource = turnoPorDia[4];
-                lbTurnos4.DataBind();
-                lbTurnos5.DataSource = turnoPorDia[5];
-                lbTurnos5.DataBind();
-                lbTurnos6.DataSource = turnoPorDia[6];
-                lbTurnos6.DataBind();
+                repeaterTurnos.DataSource = turnoPorDia;
+                repeaterTurnos.DataBind();
             }
+        }
+
+        protected void lbTurnos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var turnoId = Convert.ToInt32(((ListBox)sender).SelectedValue);
+            var turno = doctor.Turnos.Find(x => x.IdTurno == turnoId);
+            txtCausas.InnerText = turno.Causas;
+            txtObservaciones.InnerText = turno.Observaciones;
+            txtDia.Text = turno.Horario.ToString("yyyy-MM-dd");
+            txtDia_TextChanged(txtDia, new EventArgs());
+        }
+
+        protected void txtDia_TextChanged(object sender, EventArgs e)
+        {
+            var diaSeleccionado = DateTime.Parse(txtDia.Text);
+            var dia = (Dia)Enum.Parse(typeof(Dia), CultureInfo.CurrentCulture.TextInfo.ToTitleCase(diaSeleccionado.ToString("dddd")));
+            var lstHorariosLaborales = DoctorNegocio.ObtenerHorariosDelDia(doctor, dia);
+            var lstHorariosDisponibles = new List<int>();
+            if (lstHorariosLaborales.Count > 0)
+            {
+                var lstHorariosOcupados = TurnoNegocio.ObtenerTurnosDeDoctor(doctor, diaSeleccionado, diaSeleccionado.AddDays(1)).Select(x => x.Horario.Hour);
+                foreach(var horario in lstHorariosLaborales)
+                {
+                    for(int i = horario.HorarioEntrada; i <  horario.HorarioSalida; i++)
+                    {
+                        lstHorariosDisponibles.Add(i);
+                    }
+                }
+                lstHorariosDisponibles.RemoveAll(x => lstHorariosOcupados.Contains(x));
+                ddlHorario.Items.Clear();
+                ddlHorario.DataSource = lstHorariosDisponibles;
+                ddlHorario.DataBind();
+            }
+        }
+
+        protected void btnReasignarTurno_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnSemanaSiguiente_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnSemanaAnterior_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnGuardarObservacion_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

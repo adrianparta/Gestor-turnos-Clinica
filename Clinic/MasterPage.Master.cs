@@ -13,6 +13,10 @@ namespace Clinic
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if(Session["Usuario"] is null)
+            {
+                Session.Add("Usuario", DoctorNegocio.ObtenerDoctor(2));
+            }
             if(!EstaLogeado() && !(Page is Login) && !(Page is RegistroUsuario))
             {
                 Response.Redirect("Login.aspx");
