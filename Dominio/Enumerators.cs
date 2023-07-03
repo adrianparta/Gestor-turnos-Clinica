@@ -24,9 +24,9 @@ public enum Dia
 {
     Lunes = 1,
     Martes,
-    Miercoles,
+    Miércoles,
     Jueves,
     Viernes,
-    Sabado,
+    Sábado,
     Domingo
 }

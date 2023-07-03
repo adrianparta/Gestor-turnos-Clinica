@@ -11,6 +11,10 @@ namespace Dominio
         public Dia Dia { get; set; }
         public int HorarioEntrada { get; set; }
         public int HorarioSalida { get; set;}
+        public string HorarioEntradaString
+        {
+            get => HorarioEntrada > 9 ? $"{HorarioEntrada}:00" : $"0{HorarioEntrada}:00";
+        }
         public static List<HorarioLaboral> HorarioLaboralAux = new List<HorarioLaboral>();
 
         public override string ToString()

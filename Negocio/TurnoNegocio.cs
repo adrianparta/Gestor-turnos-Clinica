@@ -2,6 +2,7 @@
 using Dominio;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace Negocio
@@ -109,6 +110,7 @@ namespace Negocio
                 WHERE IdDoctor = @IdDoctor
                     AND T.Horario >= @FechaInicio
                     AND T.Horario < @FechaFin
+                ORDER BY T.Horario
             ";
 
             using (var db = Coneccion())
@@ -120,6 +122,31 @@ namespace Negocio
                     turno.Paciente = paciente;
                     return turno;
                 }, new { doctor.IdDoctor, FechaInicio = fechaInicio.Date, FechaFin = fechaFin.Date }, splitOn: "IdEspecialidad,IdPaciente").ToList();
+            }
+        }
+
+        public static bool ActualizarObservaciones(int turnoId, string observaciones)
+        {
+            var sql = @"
+                UPDATE Turnos SET
+                    Observaciones = @Observaciones
+                WHERE IdTurno = @TurnoId
+                ";
+            using (var db = Coneccion())
+            {
+                return db.Execute(sql, new{ TurnoId = turnoId, Observaciones = observaciones }, commandType:CommandType.Text) == 1;
+            }
+        }
+        public static bool ActualizarFecha(int turnoId, DateTime fecha)
+        {
+            var sql = @"
+                UPDATE Turnos SET
+                    Horario = @Fecha
+                WHERE IdTurno = @TurnoId
+                ";
+            using (var db = Coneccion())
+            {
+                return db.Execute(sql, new { TurnoId = turnoId, Fecha = fecha }, commandType: CommandType.Text) == 1;
             }
         }
     }
