@@ -50,6 +50,26 @@ namespace Negocio
                 return ObtenerTurnosEspecialidadesHorarios(doctor);
             }
         }
+        public static List<Doctor> ObtenerDoctores(int Especialidad)
+        {
+            var sql = @"
+                    SELECT D.IdDoctor
+                        , D.IdUsuario
+                        , U.Email
+                        , U.TipoUsuario
+                        , U.Nombre
+                        , U.Apellido
+                    FROM Doctores D
+                    INNER JOIN Usuarios U ON D.IdUsuario = U.IdUsuario
+                    INNER JOIN EspecialidadesDoctores e on e.IdDoctor = d.IdDoctor
+                    WHERE e.IdEspecialidad = @IdEspecialidad
+                ";
+
+            using (var db = Coneccion())
+            {
+                return db.Query<Doctor>(sql, new { IdEspecialidad = Especialidad }).ToList();
+            }
+        }
         public static Doctor ObtenerTurnosEspecialidadesHorarios(Doctor doctor)
         {
             using (var db = Coneccion())

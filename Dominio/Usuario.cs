@@ -7,5 +7,10 @@
         public string Apellido { get; set; }
         public string Email { get; set; }
         public TipoUsuario TipoUsuario { get; set; }
+        public string NombreCompleto
+        {
+            get { return $"{Nombre} {Apellido}"; }
+        }
+
     }
 }

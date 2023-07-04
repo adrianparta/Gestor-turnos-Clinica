@@ -23,30 +23,32 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent" >
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="Default.aspx">Home</a>
-                            </li>                        
+                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Drop down
                                 </a>
                                 <ul class="dropdown-menu">
-       
                                 </ul>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="TurnosMed.aspx">Turnos</a>
-                            </li>   
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="Login.aspx">Log In</a>
-                            </li>                              
+                            </li>
                             <li class="nav-item">
                                 <asp:Button CssClass="nav-link active" ID="btnRegistrarCerrarSesion" Text="text" OnClick="btnRegistrarCerrarSesion_Click" runat="server" />
-                            </li>  
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="ListarUsuarios.aspx">Listar Usuarios</a>
-                            </li>  
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="TurnosRecepcionista.aspx">turnos recepcionista</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

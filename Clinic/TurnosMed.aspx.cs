@@ -16,7 +16,7 @@ namespace Clinic
         Doctor doctor;
         protected void Page_Load(object sender, EventArgs e)
         {
-            doctor = (Doctor)Session["Usuario"];
+            doctor = (Doctor)(Session["Usuario"]);
             if(!IsPostBack)
             {
                 if (Session["DiferenciaConHoy"] is null)

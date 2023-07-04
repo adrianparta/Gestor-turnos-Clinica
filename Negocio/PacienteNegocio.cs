@@ -1,5 +1,7 @@
 ﻿using Dapper;
 using Dominio;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Negocio
 {
@@ -116,6 +118,28 @@ namespace Negocio
                 parametros.Add("@ObraSocial", paciente.ObraSocial);
 
                 return db.Execute(sql, parametros) == 1;
+            }
+        }
+        public static List<Paciente> ObtenerPacientes()
+        {
+            var sql = @"                       
+                    SELECT P.IdPaciente
+                        , P.Dni 
+                        , P.Direccion 
+                        , P.FechaNacimiento 
+                        , P.Sexo 
+                        , P.ObraSocial                                
+                        , U.Email
+                        , U.TipoUsuario
+                        , U.Nombre
+                        , U.Apellido
+                    FROM Pacientes P
+                    INNER JOIN Usuarios U ON P.IdUsuario = U.IdUsuario
+                    ";
+
+            using (var db = Coneccion())
+            {
+                return db.Query<Paciente>(sql).ToList();
             }
         }
         public static bool BorrarPaciente(int idPaciente)
