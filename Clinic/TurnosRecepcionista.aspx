@@ -10,7 +10,6 @@
     <asp:DropDownList CssClass="form-select" ID="DropDownListPacientes" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListPacientes_SelectedIndexChanged"></asp:DropDownList>
 
     <h3>agregar paciente nuevo</h3>
-
     <h3>turno sugerido</h3>
     <h3>turno sugerido</h3>
     <h3>turno sugerido</h3>
@@ -28,7 +27,10 @@
     <%}
         }%>
     <h3>Calendario filtrado por horarios del medico</h3>
+    <asp:Calendar ID="Calendario" runat="server" OnDayRender="Calendario_DayRender" OnSelectionChanged="Calendario_SelectionChanged" AutoPostBack="false">
+    </asp:Calendar>
     <h3>Horarios filtrado por disponibilidad del medico</h3>
+    <asp:DropDownList CssClass="form-select" ID="DropDownListHorarios" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListHorarios_SelectedIndexChanged"></asp:DropDownList>
     <p>Causa de la consulta</p>
     <asp:Button Text="Aceptar" runat="server" />
     <asp:Button Text="Cancelar" runat="server" />

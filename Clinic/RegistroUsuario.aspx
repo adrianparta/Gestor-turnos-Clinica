@@ -8,7 +8,6 @@
             <div class="col-md-4 mx-auto">
                 <img class="mb-4" src="..\..\Content\ClinicaIcono.png" alt="" width="72" height="72">
                 <h1 class="h3 mb-3 font-weight-normal">Registro de Usuario para la Clinica</h1>
-
                 <label for="txtNombre" class="d-flex form-label">Ingrese Nombre</label>
                 <asp:TextBox ID="txtNombre" CssClass="form-control" placeholder="Nombre" runat="server" />
 
