@@ -18,7 +18,7 @@
     <%
         if (DropDownListMedicos.SelectedIndex > 0)
         {
-            foreach (Dominio.HorarioLaboral i in horarioLaboral)
+            foreach (Dominio.HorarioLaboral i in ((List<Dominio.HorarioLaboral>)Session["horariolaboral"]))
             {
     %>
 
@@ -27,11 +27,14 @@
     <%}
         }%>
     <h3>Calendario filtrado por horarios del medico</h3>
-    <asp:Calendar ID="Calendario" runat="server" OnDayRender="Calendario_DayRender" OnSelectionChanged="Calendario_SelectionChanged" AutoPostBack="false">
-    </asp:Calendar>
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
+            <asp:Calendar ID="Calendario" runat="server" OnDayRender="Calendario_DayRender" OnSelectionChanged="Calendario_SelectionChanged" AutoPostBack="false" FirstDayOfWeek="Sunday"></asp:Calendar>
     <h3>Horarios filtrado por disponibilidad del medico</h3>
-    <asp:DropDownList CssClass="form-select" ID="DropDownListHorarios" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListHorarios_SelectedIndexChanged"></asp:DropDownList>
-    <p>Causa de la consulta</p>
+    <asp:DropDownList CssClass="form-select" ID="DropDownListHorarios" runat="server" AutoPostBack="true" OnDataBound="DropDownListHorarios_DataBound" OnSelectedIndexChanged="DropDownListHorarios_SelectedIndexChanged"></asp:DropDownList>
+    <asp:Label id="hola" Text="text" runat="server" />
+        </ContentTemplate>
+    </asp:UpdatePanel>
     <asp:Button Text="Aceptar" runat="server" />
     <asp:Button Text="Cancelar" runat="server" />
 

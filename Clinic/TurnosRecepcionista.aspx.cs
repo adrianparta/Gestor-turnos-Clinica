@@ -13,8 +13,7 @@ namespace Clinic
 {
     public partial class TurnosRecepcionista : System.Web.UI.Page
     {
-        public List<HorarioLaboral> horarioLaboral;
-        protected void Page_Load(object sender, EventArgs e)
+    protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
@@ -29,6 +28,8 @@ namespace Clinic
                 DropDownListPacientes.DataTextField = "Nombre";
                 DropDownListPacientes.DataValueField = "IdPaciente";
                 DropDownListPacientes.DataBind();
+                DropDownListPacientes.ClearSelection();
+                DropDownListPacientes.Items.Insert(0, new ListItem("-- Seleccione --", ""));
 
             }
         }
@@ -39,6 +40,8 @@ namespace Clinic
             DropDownListMedicos.DataTextField = "NombreCompleto";
             DropDownListMedicos.DataValueField = "IdDoctor";
             DropDownListMedicos.DataBind();
+            DropDownListMedicos.ClearSelection();
+            DropDownListMedicos.Items.Insert(0, new ListItem("-- Seleccione --", ""));
 
 
 
@@ -46,26 +49,33 @@ namespace Clinic
 
         protected void DropDownListMedicos_SelectedIndexChanged(object sender, EventArgs e)
         {
-            horarioLaboral = DoctorNegocio.ObtenerTurnosEspecialidadesHorarios((DoctorNegocio.ObtenerDoctor(int.Parse(DropDownListMedicos.SelectedValue)))).HorarioLaborales;
+            Session["Doctor"] = DoctorNegocio.ObtenerDoctor(int.Parse(DropDownListMedicos.SelectedValue));
+            Session["horariolaboral"] = DoctorNegocio.ObtenerTurnosEspecialidadesHorarios((Doctor)Session["doctor"]).HorarioLaborales;
         }
 
         protected void DropDownListPacientes_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            Session["paciente"] = PacienteNegocio.ObtenerPaciente(int.Parse(DropDownListPacientes.SelectedValue));
         }
 
         protected void Calendario_DayRender(object sender, DayRenderEventArgs e)
         {
-
-            e.Day.IsSelectable = false;
-            e.Cell.BackColor = Color.Red;
-            if (horarioLaboral != null)
+            if (e.Day.IsWeekend)
             {
-                for (int i = 0; i < horarioLaboral.Count; i++)
+                e.Day.IsSelectable = false;
+                e.Cell.BackColor = Color.LightGray;
+            }
+            if (!(Session["horariolaboral"] is null))
+            {
+                for (int i = 0; i < ((List<HorarioLaboral>)Session["horariolaboral"]).Count; i++)
                 {
-                    if ((int)e.Day.Date.DayOfWeek == ((int)horarioLaboral[i].Dia))
+                    if ((int)e.Day.Date.DayOfWeek == ((int)((List<HorarioLaboral>)Session["horariolaboral"])[i].Dia))
                     {
                         e.Day.IsSelectable = true;
+                        e.Cell.BackColor = Color.LightGreen;
+                    }
+                    if (e.Day.Date == Calendario.SelectedDate)
+                    {
                         e.Cell.BackColor = Color.Green;
                     }
                 }
@@ -74,21 +84,43 @@ namespace Clinic
 
         protected void DropDownListHorarios_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            hola.Text = DropDownListHorarios.SelectedValue.ToString();
         }
 
         protected void Calendario_SelectionChanged(object sender, EventArgs e)
         {
-            horarioLaboral = DoctorNegocio.ObtenerTurnosEspecialidadesHorarios((DoctorNegocio.ObtenerDoctor(int.Parse(DropDownListMedicos.SelectedValue)))).HorarioLaborales;
-            HorarioLaboral h = horarioLaboral.Find(item => (int)item.Dia == (int)Calendario.SelectedDate.DayOfWeek);
+            HorarioLaboral h = ((List<HorarioLaboral>)Session["horariolaboral"]).Find(item => (int)item.Dia == (int)Calendario.SelectedDate.DayOfWeek);
 
             List<int> horarios = new List<int>();
-            for (int i = h.HorarioEntrada; i <= h.HorarioSalida; i++)
+            for (int i = h.HorarioEntrada; i <= h.HorarioSalida -1; i++)
             {
                 horarios.Add(i);
             }
             DropDownListHorarios.DataSource = horarios;
             DropDownListHorarios.DataBind();
+            DropDownListHorarios.ClearSelection();
+            DropDownListHorarios.Items.Insert(0, new ListItem("-- Seleccione --", ""));
+        }
+
+        protected void DropDownListHorarios_DataBound(object sender, EventArgs e)
+        {
+            foreach (ListItem item in DropDownListHorarios.Items)
+            {
+                List<Turno> turnosdoctor = TurnoNegocio.ObtenerTurnosDeDoctor((Doctor)Session["doctor"], Calendario.SelectedDate, Calendario.SelectedDate.AddDays(1));
+                List<Turno> turnospaciente = TurnoNegocio.ObtenerTurnosDePaciente((Paciente)Session["paciente"]);
+
+                int.TryParse(item.Text, out int i);
+                
+                bool doctorocupado = turnosdoctor.Any(aux => aux.Horario.Hour == i);
+                bool pacienteocupado = turnospaciente.Any(aux => aux.Horario.Hour == i  && aux.Horario.Date == Calendario.SelectedDate);
+
+                item.Text = item.Text + ":00 - " + (i+1) + ":00";
+                if (doctorocupado || pacienteocupado)
+                {
+                    item.Attributes["disabled"] = "disabled";
+                    item.Attributes["style"] = "color: lightgray";
+                }
+            }
         }
     }
 }
