@@ -70,7 +70,8 @@
     <Content Include="ListarUsuarios.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="RegistroUsuario.aspx" />
-    <Content Include="TurnosMed.aspx" />
+    <Content Include="TurnosDoctor.aspx" />
+    <Content Include="TurnosPaciente.aspx" />
     <Content Include="TurnosRecepcionista.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -114,12 +115,19 @@
     <Compile Include="RegistroUsuario.aspx.designer.cs">
       <DependentUpon>RegistroUsuario.aspx</DependentUpon>
     </Compile>
-    <Compile Include="TurnosMed.aspx.cs">
-      <DependentUpon>TurnosMed.aspx</DependentUpon>
+    <Compile Include="TurnosDoctor.aspx.cs">
+      <DependentUpon>TurnosDoctor.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="TurnosMed.aspx.designer.cs">
-      <DependentUpon>TurnosMed.aspx</DependentUpon>
+    <Compile Include="TurnosDoctor.aspx.designer.cs">
+      <DependentUpon>TurnosDoctor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TurnosPaciente.aspx.cs">
+      <DependentUpon>TurnosPaciente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TurnosPaciente.aspx.designer.cs">
+      <DependentUpon>TurnosPaciente.aspx</DependentUpon>
     </Compile>
     <Compile Include="TurnosRecepcionista.aspx.cs">
       <DependentUpon>TurnosRecepcionista.aspx</DependentUpon>

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="TurnosMed" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="TurnosMed.aspx.cs" Inherits="Clinic.TurnosMed" %>
+﻿<%@ Page Title="TurnosDoctor" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="TurnosDoctor.aspx.cs" Inherits="Clinic.TurnosDoctor" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -11,11 +11,19 @@
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="col d-md-flex justify-content-between">
-                        <asp:Button Text="<-- Semana Anterior" ID="btnSemanaAnterior" CssClass="btn btn-primary" OnClick="btnSemanaAnterior_Click" runat="server" />
+                    <asp:Button Text="<-- Semana Anterior" ID="btnSemanaAnterior" CssClass="btn btn-primary" OnClick="btnSemanaAnterior_Click" runat="server" />
                     <asp:Button Text="--> Ir al Día Actual <--" ID="btnHoy" CssClass="btn btn-primary" OnClick="btnHoy_OnClick" runat="server" />
                     <asp:Button Text="Semana Siguiente -->" ID="btnSemanaSiguiente" CssClass="btn btn-primary" OnClick="btnSemanaSiguiente_Click" runat="server" />
                 </div>
             </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col d-md-flex justify-content-center">
+                <asp:TextBox ID="txtPacienteSeleccionado" CssClass="form-control text-center" Text="Seleccione un paciente por favor" runat="server" />
+            </div>
+            <div class="col-3"></div>
         </div>
         <br />
         <asp:UpdatePanel runat="server">
@@ -32,8 +40,7 @@
                                                 <asp:Label Text='<%#Eval("Fecha")%>' runat="server" />
                                             </div>
                                             <div class="card-body">
-                                                <asp:ListBox CssClass="form-select" Rows="10" ID="lbTurnos" DataSource='<%#Eval("Turnos")%>' DataTextField="TurnoEnTexto" DataValueField="IdTurno" OnSelectedIndexChanged="lbTurnos_SelectedIndexChanged" AutoPostBack="true" runat="server">
-                                                </asp:ListBox>
+                                                <asp:ListBox CssClass="form-select" Rows="10" ID="lbTurnos" DataSource='<%#Eval("Turnos")%>' DataTextField="TurnoEnTexto" DataValueField="IdTurno" OnSelectedIndexChanged="lbTurnos_SelectedIndexChanged" AutoPostBack="true" runat="server"></asp:ListBox>
                                             </div>
                                         </div>
                                     </div>
@@ -44,13 +51,6 @@
                 </div>
                 <br />
                 <br />
-                <div class="row">
-                    <div class="col-3"></div>
-                    <div class="col d-md-flex justify-content-center">
-                        <asp:TextBox ID="txtPacienteSeleccionado" CssClass="form-control text-center" Text="Seleccione un paciente por favor" runat="server" />
-                    </div>
-                    <div class="col-3"></div>
-                </div>
                 <div class="row">
                     <div class="col-1"></div>
                     <div class="col-7">
@@ -93,5 +93,50 @@
             </ContentTemplate>
         </asp:UpdatePanel>
     </div>
-
+    <div class="modal fade" id="modalObservaciones" tabindex="-1" aria-labelledby="modalObservaciones" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Exito!</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Las observaciones fueron guardadas con exito!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalReasignar" tabindex="-1" aria-labelledby="modalReasignar" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Exito!</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    El paciente ha sido reasignado con exito!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function openModal() {
+            $('#modalObservaciones').modal('show');
+        }
+        $(document).ready(function () {
+            $('#<%= btnGuardarObservacion.ClientID %>').on('click', openModal);
+        });
+        function openModal() {
+            $('#modalReasignar').modal('show');
+        }
+        $(document).ready(function () {
+            $('#<%= btnReasignarTurno.ClientID %>').on('click', openModal);
+        });
+    </script>
 </asp:Content>

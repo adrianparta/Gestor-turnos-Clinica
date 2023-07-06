@@ -11,11 +11,15 @@ using System.Web.UI.WebControls;
 
 namespace Clinic
 {
-    public partial class TurnosMed : Page
+    public partial class TurnosDoctor : Page
     {
         Doctor doctor;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (((Usuario)Session["Usuario"]).TipoUsuario != TipoUsuario.Doctor)
+            {
+                Response.Redirect("Default.aspx");
+            }
             doctor = (Doctor)(Session["Usuario"]);
             if(!IsPostBack)
             {

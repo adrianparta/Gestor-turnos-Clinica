@@ -11,7 +11,7 @@ namespace Clinic
 {
 
 
-    public partial class TurnosMed
+    public partial class TurnosDoctor
     {
 
         /// <summary>
@@ -42,15 +42,6 @@ namespace Clinic
         protected global::System.Web.UI.WebControls.Button btnSemanaSiguiente;
 
         /// <summary>
-        /// repeaterTurnos control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater repeaterTurnos;
-
-        /// <summary>
         /// txtPacienteSeleccionado control.
         /// </summary>
         /// <remarks>
@@ -58,6 +49,15 @@ namespace Clinic
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPacienteSeleccionado;
+
+        /// <summary>
+        /// repeaterTurnos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater repeaterTurnos;
 
         /// <summary>
         /// txtCausas control.

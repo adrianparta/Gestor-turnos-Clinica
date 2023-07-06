@@ -85,12 +85,16 @@ namespace Clinic
                 idUsuarioActual = ((Usuario)Session["Usuario"]).IdUsuario;
                 tipoUsuarioRegistro = (TipoUsuario)(ddlTipoUsuario.SelectedIndex + 1);        
             }
+            else
+            {
+                tipoUsuarioRegistro = TipoUsuario.Paciente;
+            }
         }
 
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
             Response.Redirect(esAdmin 
-                ? ""
+                ? "ListarUsuarios.aspx"
                 : "Login.aspx");
         }
 

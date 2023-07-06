@@ -69,6 +69,7 @@ namespace Negocio
                 INNER JOIN Usuarios U ON D.IdUsuario = U.IdUsuario
                 INNER JOIN Especialidades E ON T.IdEspecialidad = E.IdEspecialidad
                 WHERE IdPaciente = @IdPaciente
+                ORDER BY T.Horario
             ";
 
             using (var db = Coneccion())
