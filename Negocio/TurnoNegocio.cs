@@ -150,5 +150,17 @@ namespace Negocio
                 return db.Execute(sql, new { TurnoId = turnoId, Fecha = fecha }, commandType: CommandType.Text) == 1;
             }
         }
+        public static bool ActualizarEstado(int turnoId, Estado estado)
+        {
+            var sql = @"
+                UPDATE Turnos SET
+                    Estado = @Estado
+                WHERE IdTurno = @TurnoId
+                ";
+            using (var db = Coneccion())
+            {
+                return db.Execute(sql, new { TurnoId = turnoId, Estado = estado }, commandType: CommandType.Text) == 1;
+            }
+        }
     }
 }
