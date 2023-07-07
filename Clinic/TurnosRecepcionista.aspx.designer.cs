@@ -33,6 +33,15 @@ namespace Clinic
         protected global::System.Web.UI.WebControls.DropDownList DropDownListPacientes;
 
         /// <summary>
+        /// Control BotonAgregarPaciente.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BotonAgregarPaciente;
+
+        /// <summary>
         /// Control DropDownListMedicos.
         /// </summary>
         /// <remarks>
@@ -69,12 +78,30 @@ namespace Clinic
         protected global::System.Web.UI.WebControls.DropDownList DropDownListHorarios;
 
         /// <summary>
-        /// Control hola.
+        /// Control TextBoxCausas.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label hola;
+        protected global::System.Web.UI.WebControls.TextBox TextBoxCausas;
+
+        /// <summary>
+        /// Control Aceptar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Aceptar;
+
+        /// <summary>
+        /// Control Cancelar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Cancelar;
     }
 }

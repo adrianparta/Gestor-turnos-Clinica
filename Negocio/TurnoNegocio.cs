@@ -162,5 +162,28 @@ namespace Negocio
                 return db.Execute(sql, new { TurnoId = turnoId, Estado = estado }, commandType: CommandType.Text) == 1;
             }
         }
+        public static int AgregarTurno(Turno turno)
+        {
+            var sql = @"
+                INSERT INTO Turnos
+                    (IdEspecialidad,IdDoctor,IdPaciente,Horario,Causas,Estado)
+                VALUES
+                    (@IdEspecialidad,@IdDoctor,@IdPaciente,@Horario,@Causas,1)
+            ";
+
+            using (var db = Coneccion())
+            {
+                var parametros = new DynamicParameters();
+                parametros.Add("@IdEspecialidad", turno.Especialidad.IdEspecialidad);
+                parametros.Add("@IdDoctor", turno.Doctor.IdDoctor);
+                parametros.Add("@IdPaciente", turno.Paciente.IdPaciente);
+                parametros.Add("@Horario", turno.Horario);
+                parametros.Add("@Causas", turno.Causas);
+
+
+                return db.ExecuteScalar<int>(sql, parametros);
+
+            }
+        }
     }
 }

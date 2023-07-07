@@ -9,7 +9,8 @@
     <h3>Buscador de paciente</h3>
     <asp:DropDownList CssClass="form-select" ID="DropDownListPacientes" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListPacientes_SelectedIndexChanged"></asp:DropDownList>
 
-    <h3>agregar paciente nuevo</h3>
+    <asp:Button ID="BotonAgregarPaciente" Text="Agregar paciente" runat="server" OnClick="BotonAgregarPaciente_Click"/>
+
     <h3>turno sugerido</h3>
     <h3>turno sugerido</h3>
     <h3>turno sugerido</h3>
@@ -30,12 +31,12 @@
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
             <asp:Calendar ID="Calendario" runat="server" OnDayRender="Calendario_DayRender" OnSelectionChanged="Calendario_SelectionChanged" AutoPostBack="false" FirstDayOfWeek="Sunday"></asp:Calendar>
-    <h3>Horarios filtrado por disponibilidad del medico</h3>
-    <asp:DropDownList CssClass="form-select" ID="DropDownListHorarios" runat="server" AutoPostBack="true" OnDataBound="DropDownListHorarios_DataBound" OnSelectedIndexChanged="DropDownListHorarios_SelectedIndexChanged"></asp:DropDownList>
-    <asp:Label id="hola" Text="text" runat="server" />
+            <h3>Horarios filtrado por disponibilidad del medico</h3>
+            <asp:DropDownList CssClass="form-select" ID="DropDownListHorarios" runat="server" AutoPostBack="true" OnDataBound="DropDownListHorarios_DataBound" OnSelectedIndexChanged="DropDownListHorarios_SelectedIndexChanged"></asp:DropDownList>
+            <asp:TextBox runat="server" ID="TextBoxCausas" />
         </ContentTemplate>
     </asp:UpdatePanel>
-    <asp:Button Text="Aceptar" runat="server" />
-    <asp:Button Text="Cancelar" runat="server" />
+    <asp:Button ID="Aceptar" Text="Aceptar" runat="server" OnClick="Aceptar_Click" />
+    <asp:Button ID="Cancelar" Text="Cancelar" runat="server" OnClick="Cancelar_Click" />
 
 </asp:Content>

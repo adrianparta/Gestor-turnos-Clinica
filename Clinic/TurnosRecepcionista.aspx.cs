@@ -43,7 +43,7 @@ namespace Clinic
             DropDownListMedicos.ClearSelection();
             DropDownListMedicos.Items.Insert(0, new ListItem("-- Seleccione --", ""));
 
-
+            Session["Especialidad"] = EspecialidadNegocio.ObtenerEspecialidad(int.Parse(DropDownListEspecialidad.SelectedValue));
 
         }
 
@@ -84,7 +84,6 @@ namespace Clinic
 
         protected void DropDownListHorarios_SelectedIndexChanged(object sender, EventArgs e)
         {
-            hola.Text = DropDownListHorarios.SelectedValue.ToString();
         }
 
         protected void Calendario_SelectionChanged(object sender, EventArgs e)
@@ -121,6 +120,28 @@ namespace Clinic
                     item.Attributes["style"] = "color: lightgray";
                 }
             }
+        }
+        protected void Aceptar_Click(object sender, EventArgs e)
+        {
+            Turno aux = new Turno();
+            aux.Especialidad = (Especialidad)Session["Especialidad"];
+            aux.Doctor = ((Doctor)Session["Doctor"]);
+            aux.Paciente = (Paciente)Session["paciente"];
+            aux.Horario = Calendario.SelectedDate;
+            aux.Horario = aux.Horario.AddHours(int.Parse(DropDownListHorarios.SelectedValue));
+            aux.Causas = TextBoxCausas.Text;
+
+            TurnoNegocio.AgregarTurno(aux);
+            Response.Redirect("Default.aspx");
+        }
+
+        protected void Cancelar_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Default.aspx");
+        }
+
+        protected void BotonAgregarPaciente_Click(object sender, EventArgs e)
+        {
         }
     }
 }
