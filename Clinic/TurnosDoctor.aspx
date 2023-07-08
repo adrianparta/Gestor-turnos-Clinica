@@ -3,8 +3,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="bg-dark-subtle">
-
         <br />
         <br />
         <div class="row">
@@ -21,7 +19,7 @@
         <div class="row">
             <div class="col-3"></div>
             <div class="col d-md-flex justify-content-center">
-                <asp:TextBox ID="txtPacienteSeleccionado" CssClass="form-control text-center" Text="Seleccione un paciente por favor" runat="server" />
+                <asp:Label ID="txtPacienteSeleccionado" CssClass="text-center" Font-Bold="true" Font-Size="Large" Text="Seleccione un paciente por favor" runat="server" />
             </div>
             <div class="col-3"></div>
         </div>
@@ -36,10 +34,10 @@
                                 <ItemTemplate>
                                     <div class="col">
                                         <div class="card">
-                                            <div class="card-header">
-                                                <asp:Label Text='<%#Eval("Fecha")%>' runat="server" />
+                                            <div class="card-header bg-secondary-subtle text-center">
+                                                <asp:Label Font-Bold="true" Text='<%#Eval("Fecha")%>' runat="server" />
                                             </div>
-                                            <div class="card-body">
+                                            <div class="card-body bg-dark-subtle">
                                                 <asp:ListBox CssClass="form-select" Rows="10" ID="lbTurnos" DataSource='<%#Eval("Turnos")%>' DataTextField="TurnoEnTexto" DataValueField="IdTurno" OnSelectedIndexChanged="lbTurnos_SelectedIndexChanged" AutoPostBack="true" runat="server"></asp:ListBox>
                                             </div>
                                         </div>
@@ -55,11 +53,12 @@
                     <div class="col-1"></div>
                     <div class="col-7">
                         <div class="row">
-                            <label for="txtCausas" class="form-label">Causas:</label>
+                            <asp:Label Text="Causas:" Font-Bold="true" CssClass="p-2" runat="server" />
                             <textarea class="form-control" rows="5" id="txtCausas" readonly runat="server"></textarea>
                         </div>
+                        <br />
                         <div class="row">
-                            <label for="txtObservaciones" class="form-label">Observaciones:</label>
+                            <asp:Label Text="Observaciones:" Font-Bold="true" CssClass="p-2" runat="server" />
                             <textarea class="form-control" rows="5" id="txtObservaciones" runat="server"></textarea>
                         </div>
                         <br />
@@ -71,7 +70,7 @@
                         </div>
                     </div>
                     <div class="col-4">
-                        <label class="form-label justify-content-center row">Reasignar turno:</label>
+                        <asp:Label Text="Reasignar turno:" CssClass="form-label justify-content-center row" Font-Bold="true" runat="server" />
                         <div class="row">
                             <div class="col-1"></div>
                             <div class="col-5">
@@ -92,7 +91,6 @@
                 </div>
             </ContentTemplate>
         </asp:UpdatePanel>
-    </div>
     <div class="modal fade" id="modalObservaciones" tabindex="-1" aria-labelledby="modalObservaciones" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

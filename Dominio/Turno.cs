@@ -13,6 +13,7 @@ namespace Dominio
         public string Causas { get; set; }
         public string Observaciones { get; set; }
         public Estado Estado { get; set; }
+        public string TurnoEnTexto { get => $"{Horario:t} {Paciente}"; }
         public override string ToString()
         {
             return $"{Horario:t} {Paciente}";
