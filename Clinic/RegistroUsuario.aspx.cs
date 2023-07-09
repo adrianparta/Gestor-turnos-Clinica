@@ -17,7 +17,7 @@ namespace Clinic
         protected void Page_Load(object sender, EventArgs e)
         {
             idUsuarioModificar = Convert.ToInt32(Request.QueryString["IdUsuario"]);
-            if(!IsPostBack)
+            if (!IsPostBack)
             {
 
                 HorarioLaboral.HorarioLaboralAux = new List<HorarioLaboral>();
@@ -47,7 +47,7 @@ namespace Clinic
                 if (idUsuarioModificar > 0)
                 {
                     var usuario = UsuarioNegocio.ObtenerUsuario(idUsuarioModificar);
-                    if(!(usuario is null) && !(Session["Usuario"] is null))
+                    if (!(usuario is null) && !(Session["Usuario"] is null))
                     {
                         btnRegistrar.Text = "Guardar Cambios";
                         txtNombre.Text = usuario.Nombre;
@@ -83,7 +83,7 @@ namespace Clinic
             {
                 esAdmin = ((Usuario)Session["Usuario"]).TipoUsuario == TipoUsuario.Admin;
                 idUsuarioActual = ((Usuario)Session["Usuario"]).IdUsuario;
-                tipoUsuarioRegistro = (TipoUsuario)(ddlTipoUsuario.SelectedIndex + 1);        
+                tipoUsuarioRegistro = (TipoUsuario)(ddlTipoUsuario.SelectedIndex + 1);
             }
             else
             {
@@ -93,7 +93,7 @@ namespace Clinic
 
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
-            Response.Redirect(esAdmin 
+            Response.Redirect(esAdmin
                 ? "ListarUsuarios.aspx"
                 : "Login.aspx");
         }
@@ -108,7 +108,7 @@ namespace Clinic
             };
             if (esAdmin || idUsuarioModificar == idUsuarioActual)
             {
-                nuevoUsuario.TipoUsuario = (TipoUsuario) (ddlTipoUsuario.SelectedIndex + 1);
+                nuevoUsuario.TipoUsuario = (TipoUsuario)(ddlTipoUsuario.SelectedIndex + 1);
                 Doctor nuevoDoctor = new Doctor();
                 Paciente nuevoPaciente = new Paciente();
                 switch (nuevoUsuario.TipoUsuario)
@@ -134,10 +134,10 @@ namespace Clinic
                         // Registro Exitoso 
                         break;
                 }
-                if(btnRegistrar.Text == "Registrar")
+                if (btnRegistrar.Text == "Registrar")
                 {
                     int idUsuario = UsuarioNegocio.AltaUsuario(nuevoUsuario, txtPassword.Text);
-                    if(idUsuario > 0)
+                    if (idUsuario > 0)
                     {
                         nuevoUsuario.IdUsuario = idUsuario;
                         switch (nuevoUsuario.TipoUsuario)
@@ -158,7 +158,7 @@ namespace Clinic
                     else
                     {
                         //Error
-                    }              
+                    }
                 }
                 else
                 {
@@ -197,7 +197,15 @@ namespace Clinic
                     };
                     PacienteNegocio.AltaPaciente(nuevoPaciente);
                     Session.Add("Usuario", nuevoPaciente);
-                    Response.Redirect("Default.aspx");
+                    if ((Request.QueryString["x"].ToString()) is null)
+                    {
+                        Response.Redirect("Default.aspx");
+                    }
+                    else
+                    {
+                        Response.Redirect("TurnosRecepcionista.aspx?x=1");
+                    }
+
                 }
                 else
                 {
@@ -213,23 +221,24 @@ namespace Clinic
 
         protected void btnAgregarHorario_Click(object sender, EventArgs e)
         {
-            var horarioLaboral = new HorarioLaboral(){
+            var horarioLaboral = new HorarioLaboral()
+            {
                 Dia = (Dia)ddlDia.SelectedIndex + 1,
                 HorarioEntrada = Convert.ToInt32(txtHorarioEntrada.Text),
                 HorarioSalida = Convert.ToInt32(txtHorarioSalida.Text)
             };
-            if(horarioLaboral.HorarioEntrada < horarioLaboral.HorarioSalida)
+            if (horarioLaboral.HorarioEntrada < horarioLaboral.HorarioSalida)
             {
-                if(!HorarioLaboral.HorarioLaboralAux.Any(x => x.ToString() == horarioLaboral.ToString()))
+                if (!HorarioLaboral.HorarioLaboralAux.Any(x => x.ToString() == horarioLaboral.ToString()))
                 {
-                    if(HorarioLaboral.HorarioLaboralAux.Any(x => x.Dia == horarioLaboral.Dia 
+                    if (HorarioLaboral.HorarioLaboralAux.Any(x => x.Dia == horarioLaboral.Dia
                     && (((horarioLaboral.HorarioEntrada >= x.HorarioEntrada && horarioLaboral.HorarioEntrada < x.HorarioSalida)
                         || (horarioLaboral.HorarioSalida > x.HorarioEntrada && horarioLaboral.HorarioSalida <= x.HorarioSalida))
                             || (horarioLaboral.HorarioEntrada < x.HorarioEntrada && horarioLaboral.HorarioSalida > x.HorarioSalida))))
                     {
                         return;
                     }
-                    HorarioLaboral.HorarioLaboralAux.Add(horarioLaboral);          
+                    HorarioLaboral.HorarioLaboralAux.Add(horarioLaboral);
                     lbHorario.Items.Add(horarioLaboral.ToString());
                 }
             }
@@ -237,7 +246,7 @@ namespace Clinic
 
         protected void btnAgregarEspecialidad_Click(object sender, EventArgs e)
         {
-            if(!Especialidad.EspecialidadAux.Any(x => x.IdEspecialidad == Convert.ToInt32(ddlEspecialidad.SelectedValue) ))
+            if (!Especialidad.EspecialidadAux.Any(x => x.IdEspecialidad == Convert.ToInt32(ddlEspecialidad.SelectedValue)))
             {
                 lbEspecialidad.Items.Add(ddlEspecialidad.SelectedItem);
                 Especialidad.EspecialidadAux.Add(new Especialidad { IdEspecialidad = Convert.ToInt32(ddlEspecialidad.SelectedValue) });

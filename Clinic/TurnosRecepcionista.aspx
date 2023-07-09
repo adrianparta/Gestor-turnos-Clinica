@@ -4,12 +4,12 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <h1>Nuevo turno</h1>
+    <asp:DropDownList CssClass="form-select" ID="DropDownListPacientes" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListPacientes_SelectedIndexChanged"></asp:DropDownList>
+    <h3>Buscador de paciente</h3>
+    <asp:Button ID="BotonAgregarPaciente" Text="Agregar paciente" runat="server" OnClick="BotonAgregarPaciente_Click"/>
+
     <asp:DropDownList CssClass="form-select" ID="DropDownListEspecialidad" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListEspecialidad_SelectedIndexChanged"></asp:DropDownList>
 
-    <h3>Buscador de paciente</h3>
-    <asp:DropDownList CssClass="form-select" ID="DropDownListPacientes" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListPacientes_SelectedIndexChanged"></asp:DropDownList>
-
-    <asp:Button ID="BotonAgregarPaciente" Text="Agregar paciente" runat="server" OnClick="BotonAgregarPaciente_Click"/>
 
     <h3>turno sugerido</h3>
     <h3>turno sugerido</h3>

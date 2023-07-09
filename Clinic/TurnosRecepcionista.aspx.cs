@@ -31,6 +31,12 @@ namespace Clinic
                 DropDownListPacientes.ClearSelection();
                 DropDownListPacientes.Items.Insert(0, new ListItem("-- Seleccione --", ""));
 
+                if (!(Request.QueryString["x"] is null))
+                {
+                    DropDownListPacientes.SelectedValue = PacienteNegocio.ObtenerPacientes().Max(item => item.IdPaciente).ToString();
+                    Session["paciente"] = PacienteNegocio.ObtenerPaciente(int.Parse(DropDownListPacientes.SelectedValue));
+
+                }
             }
         }
 
@@ -142,6 +148,7 @@ namespace Clinic
 
         protected void BotonAgregarPaciente_Click(object sender, EventArgs e)
         {
+            Response.Redirect("RegistroUsuario.aspx?x=1");
         }
     }
 }

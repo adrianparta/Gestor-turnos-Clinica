@@ -15,15 +15,6 @@ namespace Clinic
     {
 
         /// <summary>
-        /// Control DropDownListEspecialidad.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownListEspecialidad;
-
-        /// <summary>
         /// Control DropDownListPacientes.
         /// </summary>
         /// <remarks>
@@ -40,6 +31,15 @@ namespace Clinic
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BotonAgregarPaciente;
+
+        /// <summary>
+        /// Control DropDownListEspecialidad.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownListEspecialidad;
 
         /// <summary>
         /// Control DropDownListMedicos.
