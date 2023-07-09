@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-md-4 mx-auto">
                 <img class="mb-4" src="..\..\Content\ClinicaIcono.png" alt="" width="72" height="72">
-                <h1 class="h3 mb-3 font-weight-normal">Registro de Usuario para la Clinica</h1>
+                <h1 id="lblRegistro" runat="server" class="h3 mb-3 font-weight-normal">Registro de Usuario para la Clinica</h1>
                 <label for="txtNombre" class="d-flex form-label">Ingrese Nombre</label>
                 <asp:TextBox ID="txtNombre" CssClass="form-control" placeholder="Nombre" runat="server" />
 
@@ -63,9 +63,8 @@
                                 <label for="lbHorario" class="d-flex form-label">Horarios Seleccionados</label>
                                 <asp:ListBox ID="lbHorario" CssClass="form-select" SelectionMode="Multiple" runat="server"></asp:ListBox>
                                 <div class="row">
-                                    <div class="col-9"></div>
-                                    <div class="col-3">
-                                        <asp:Button ID="btnEliminarHorario" CssClass="btn btn-primary" Text="Eliminar" runat="server" OnClick="btnEliminarHorario_Click" />
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <asp:Button ID="btnEliminarHorario" CssClass="btn btn-primary" Text="Eliminar Horario" runat="server" OnClick="btnEliminarHorario_Click" />
                                     </div>
                                 </div>
                             </ContentTemplate>
@@ -85,9 +84,8 @@
                                 <label for="lbEspecialidad" class="d-flex form-label">Especialidades Seleccionadas</label>
                                 <asp:ListBox ID="lbEspecialidad" CssClass="form-select" SelectionMode="Multiple" runat="server"></asp:ListBox>
                                 <div class="row">
-                                    <div class="col-9"></div>
-                                    <div class="col-3">
-                                        <asp:Button ID="btnEliminarEspecialidad" CssClass="btn btn-primary" Text="Eliminar" runat="server" OnClick="btnEliminarEspecialidad_Click" />
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <asp:Button ID="btnEliminarEspecialidad" CssClass="btn btn-primary" Text="Eliminar Especialidad" runat="server" OnClick="btnEliminarEspecialidad_Click" />
                                     </div>
                                 </div>
                             </ContentTemplate>
@@ -133,9 +131,9 @@
                 <asp:DropDownList ID="ddlSexo" CssClass="form-select" runat="server"></asp:DropDownList>
                 <%  } %>
                 <br />
-                <div class="position-absolute start-50">
-                    <asp:Button Text="Cancelar" ID="btnCancelar" CssClass="btn btn-lg btn-primary" runat="server" OnClick="btnCancelar_Click" />
-                    <asp:Button Text="Registrar" ID="btnRegistrar" CssClass="btn btn-lg btn-primary" runat="server" OnClick="btnRegistrar_Click" />
+                <div class="d-flex justify-content-end">
+                    <asp:Button Text="Cancelar" ID="btnCancelar" CssClass="btn btn-lg btn-primary m-1" runat="server" OnClick="btnCancelar_Click" />
+                    <asp:Button Text="Registrar" ID="btnRegistrar" CssClass="btn btn-lg btn-primary m-1" runat="server" OnClick="btnRegistrar_Click" />
                 </div>
             </div>
         </div>

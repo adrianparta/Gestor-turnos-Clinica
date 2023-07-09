@@ -49,6 +49,7 @@ namespace Clinic
                     var usuario = UsuarioNegocio.ObtenerUsuario(idUsuarioModificar);
                     if (!(usuario is null) && !(Session["Usuario"] is null))
                     {
+                        lblRegistro.InnerText = "Modificación de Perfil de Usuario";
                         btnRegistrar.Text = "Guardar Cambios";
                         txtNombre.Text = usuario.Nombre;
                         txtApellido.Text = usuario.Apellido;

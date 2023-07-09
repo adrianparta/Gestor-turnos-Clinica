@@ -20,12 +20,13 @@ namespace Clinic
             if (EstaLogeado())
             {
                 btnRegistrarCerrarSesion.Text = "Cerrar Sesión";
-                btnLogin.Visible = false;
+                btnLogin.Text = "Editar Perfil";
             }
             else
             {
                 btnRegistrarCerrarSesion.Text = "Registrarse";
-                btnLogin.Visible = true;
+                btnLogin.Text = "Log In";
+
             }
         }
 
@@ -49,7 +50,14 @@ namespace Clinic
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Login.aspx");
+            if (EstaLogeado())
+            {
+                Response.Redirect($"RegistroUsuario.aspx?IdUsuario={((Usuario)Session["Usuario"]).IdUsuario}");
+            }
+            else
+            {
+                Response.Redirect("Login.aspx");
+            }
         }
     }
 }

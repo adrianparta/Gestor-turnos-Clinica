@@ -32,6 +32,8 @@ namespace Clinic
                 {
                     Session.Add("TurnoElegido", -1);
                 }
+                btnReasignarTurno.Enabled = false;
+                btnGuardarObservacion.Enabled = false;
                 ObtenerTurnosPorFecha();
             }
         }
@@ -46,6 +48,7 @@ namespace Clinic
             txtCausas.InnerText = turno.Causas;
             txtObservaciones.InnerText = turno.Observaciones;
             txtDia.Text = turno.Horario.ToString("yyyy-MM-dd");
+            btnGuardarObservacion.Enabled = true;
             txtDia_TextChanged(txtDia, new EventArgs());
         }
 
@@ -66,6 +69,10 @@ namespace Clinic
                     }
                 }
                 lstHorariosDisponibles.RemoveAll(x => lstHorariosOcupados.Contains(x.HorarioEntrada));
+                if(lstHorariosDisponibles.Any() )
+                {
+                    btnReasignarTurno.Enabled = true;
+                }
                 ddlHorario.Items.Clear();
                 ddlHorario.DataSource = lstHorariosDisponibles;
                 ddlHorario.DataTextField = "HorarioEntradaString";
@@ -166,6 +173,7 @@ namespace Clinic
             var fecha = DateTime.Parse(txtDia.Text);
             fecha = fecha.AddHours(Convert.ToInt32(ddlHorario.SelectedValue));
             TurnoNegocio.ActualizarFecha((int)Session["TurnoElegido"], fecha);
+            txtDia_TextChanged(txtDia, new EventArgs());
             ObtenerTurnosPorFecha();
         }
     }

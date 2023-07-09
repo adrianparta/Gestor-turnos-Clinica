@@ -63,8 +63,7 @@
                         </div>
                         <br />
                         <div class="row">
-                            <div class="col-9"></div>
-                            <div class="col-2">
+                            <div class="d-flex justify-content-end mt-3">
                                 <asp:Button Text="Guardar Observacion" ID="btnGuardarObservacion" CssClass="btn btn-primary" OnClick="btnGuardarObservacion_Click" runat="server" />
                             </div>
                         </div>
@@ -82,7 +81,7 @@
                         </div>
                         <br />
                         <div class="row">
-                            <div class="col-7"></div>
+                            <div class="col-8"></div>
                             <div class="col-3">
                                 <asp:Button Text="Reasignar" ID="btnReasignarTurno" OnClick="btnReasignarTurno_Click" CssClass="btn btn-primary" runat="server" />
                             </div>
@@ -102,7 +101,7 @@
                     Las observaciones fueron guardadas con exito!
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                    <asp:Button Text="Cerrar" CssClass="btn btn-primary" runat="server" />
                 </div>
             </div>
         </div>
@@ -118,23 +117,23 @@
                     El paciente ha sido reasignado con exito!
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                    <asp:Button Text="Cerrar" CssClass="btn btn-primary" runat="server" />
                 </div>
             </div>
         </div>
     </div>
     <script>
-        function openModal() {
+        function openModalObservaciones() {
             $('#modalObservaciones').modal('show');
         }
         $(document).ready(function () {
-            $('#<%= btnGuardarObservacion.ClientID %>').on('click', openModal);
+            $('#<%= btnGuardarObservacion.ClientID %>').on('click', openModalObservaciones);
         });
-        function openModal() {
+        function openModalReasignar() {
             $('#modalReasignar').modal('show');
         }
         $(document).ready(function () {
-            $('#<%= btnReasignarTurno.ClientID %>').on('click', openModal);
+            $('#<%= btnReasignarTurno.ClientID %>').on('click', openModalReasignar);
         });
     </script>
 </asp:Content>
