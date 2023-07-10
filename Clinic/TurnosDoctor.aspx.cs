@@ -32,6 +32,10 @@ namespace Clinic
                 {
                     Session.Add("TurnoElegido", -1);
                 }
+                if (Session["PacienteElegido"] is null)
+                {
+                    Session.Add("PacienteElegido", -1);
+                }
                 btnReasignarTurno.Enabled = false;
                 btnGuardarObservacion.Enabled = false;
                 ObtenerTurnosPorFecha();
@@ -43,6 +47,7 @@ namespace Clinic
             var turnoId = Convert.ToInt32(((ListBox)sender).SelectedValue);
             Session["TurnoElegido"] = turnoId;
             var turno = doctor.Turnos.Find(x => x.IdTurno == turnoId);
+            Session["PacienteElegido"] = turno.Paciente.IdPaciente;
             ((ListBox)sender).SelectedItem.Selected = false;
             txtPacienteSeleccionado.Text = $"Turno de: {turno.Paciente} para la especialidad: {turno.Especialidad}";
             txtCausas.InnerText = turno.Causas;
@@ -60,12 +65,20 @@ namespace Clinic
             var lstHorariosDisponibles = new List<HorarioLaboral>();
             if (lstHorariosLaborales.Count > 0)
             {
-                var lstHorariosOcupados = TurnoNegocio.ObtenerTurnosDeDoctor(doctor, diaSeleccionado, diaSeleccionado.AddDays(1)).Select(x => x.Horario.Hour);
+                var lstHorariosOcupados = TurnoNegocio.ObtenerTurnosDeDoctor(doctor, diaSeleccionado, diaSeleccionado.AddDays(1)).Select(x => x.Horario.Hour).ToList();
                 foreach(var horario in lstHorariosLaborales)
                 {
                     for(int i = horario.HorarioEntrada; i <  horario.HorarioSalida; i++)
                     {
                         lstHorariosDisponibles.Add(new HorarioLaboral(){ HorarioEntrada = i });
+                    }
+                }
+                var turnosPaciente = TurnoNegocio.ObtenerHorarioTurnoDePaciente(Convert.ToInt32(Session["PacienteElegido"]), diaSeleccionado);
+                if (turnosPaciente.Any())
+                {
+                    foreach(var turnoPaciente in  turnosPaciente)
+                    {
+                        lstHorariosOcupados.Add(turnoPaciente.Horario.Hour);
                     }
                 }
                 lstHorariosDisponibles.RemoveAll(x => lstHorariosOcupados.Contains(x.HorarioEntrada));

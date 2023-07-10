@@ -125,6 +125,22 @@ namespace Negocio
                 }, new { doctor.IdDoctor, FechaInicio = fechaInicio.Date, FechaFin = fechaFin.Date }, splitOn: "IdEspecialidad,IdPaciente").ToList();
             }
         }
+        public static List<Turno> ObtenerHorarioTurnoDePaciente(int idPaciente, DateTime fecha)
+        {
+            var sql = @"
+                SELECT T.Horario 
+                FROM Turnos T
+                WHERE IdPaciente = @IdPaciente
+                    AND T.Horario >= @FechaInicio
+                    AND T.Horario < @FechaFin
+                ORDER BY T.Horario
+            ";
+
+            using (var db = Coneccion())
+            {
+                return db.Query<Turno>(sql, new { IdPaciente = idPaciente, FechaInicio = fecha.Date, FechaFin = fecha.AddDays(1).Date }).ToList();
+            }
+        }
 
         public static bool ActualizarObservaciones(int turnoId, string observaciones)
         {
