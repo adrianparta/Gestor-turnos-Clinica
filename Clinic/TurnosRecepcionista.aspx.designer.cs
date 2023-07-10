@@ -42,6 +42,33 @@ namespace Clinic
         protected global::System.Web.UI.WebControls.DropDownList DropDownListEspecialidad;
 
         /// <summary>
+        /// Control TurnoSugerido1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button TurnoSugerido1;
+
+        /// <summary>
+        /// Control TurnoSugerido2.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button TurnoSugerido2;
+
+        /// <summary>
+        /// Control TurnoSugerido3.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button TurnoSugerido3;
+
+        /// <summary>
         /// Control DropDownListMedicos.
         /// </summary>
         /// <remarks>

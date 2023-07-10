@@ -6,14 +6,16 @@
     <h1>Nuevo turno</h1>
     <asp:DropDownList CssClass="form-select" ID="DropDownListPacientes" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListPacientes_SelectedIndexChanged"></asp:DropDownList>
     <h3>Buscador de paciente</h3>
-    <asp:Button ID="BotonAgregarPaciente" Text="Agregar paciente" runat="server" OnClick="BotonAgregarPaciente_Click"/>
+    <asp:Button ID="BotonAgregarPaciente" Text="Agregar paciente" runat="server" OnClick="BotonAgregarPaciente_Click" />
 
     <asp:DropDownList CssClass="form-select" ID="DropDownListEspecialidad" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListEspecialidad_SelectedIndexChanged"></asp:DropDownList>
 
 
-    <h3>turno sugerido</h3>
-    <h3>turno sugerido</h3>
-    <h3>turno sugerido</h3>
+    <asp:Button ID="TurnoSugerido1" OnClick="TurnoSugerido_Click" runat="server" />
+    <br />
+    <asp:Button ID="TurnoSugerido2" OnClick="TurnoSugerido_Click" runat="server" />
+    <br />
+    <asp:Button ID="TurnoSugerido3" OnClick="TurnoSugerido_Click" runat="server" />
 
     <asp:DropDownList CssClass="form-select" ID="DropDownListMedicos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListMedicos_SelectedIndexChanged"></asp:DropDownList>
     <%

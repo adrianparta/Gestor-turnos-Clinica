@@ -16,7 +16,7 @@ namespace Dominio
         public string TurnoEnTexto { get => $"{Horario:t} {Paciente}"; }
         public override string ToString()
         {
-            return $"{Horario:t} {Paciente}";
+            return $"{Horario}, doctor {Doctor.NombreCompleto}";
         }
         public static bool operator ==(Turno a, Turno b)
         {
