@@ -34,7 +34,7 @@
 
 
     <div class="row justify-content-center">
-        <div class="col-4">
+        <div class="col-2">
             <asp:DropDownList CssClass="form-select" ID="DropDownListMedicos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListMedicos_SelectedIndexChanged"></asp:DropDownList>
             <%
                 if (DropDownListMedicos.SelectedIndex > 0)
@@ -48,19 +48,19 @@
             <%}
                 }%>
         </div>
-        <div class="col-4">
+        <div class="col-6">
             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                 <ContentTemplate>
 
                     <div class="row">
-                        <div class="col">
-                            <asp:Calendar ID="Calendario" runat="server" OnDayRender="Calendario_DayRender" OnSelectionChanged="Calendario_SelectionChanged" AutoPostBack="false" FirstDayOfWeek="Sunday"></asp:Calendar>
+                        <div class="col-9 p-0">
+                            <asp:Calendar ID="Calendario" runat="server" OnDayRender="Calendario_DayRender" OnSelectionChanged="Calendario_SelectionChanged" AutoPostBack="false" FirstDayOfWeek="Sunday" Height="400px" Width="100%"></asp:Calendar>
                         </div>
-                        <div class="col">
-                            <ul>
+                        <div class="col p-0">
+                            <ul class="px-1">
                                 <asp:Repeater ID="RepeaterHorarios" runat="server">
                                     <ItemTemplate>
-                                        <asp:Button ID="boton" Text="<%#Container.DataItem.ToString() %>" runat="server" CommandArgument='<%#Container.DataItem.ToString() %>' CommandName="numero" OnPreRender="boton_PreRender" OnClick="Repeater_Click"/>
+                                        <asp:Button CssClass="d-block" width="100%" ID="boton" Text="<%#Container.DataItem.ToString() %>" runat="server" CommandArgument='<%#Container.DataItem.ToString() %>' CommandName="numero" OnPreRender="boton_PreRender" OnClick="Repeater_Click"/>
                                     </ItemTemplate>
                                 </asp:Repeater>
                             </ul>

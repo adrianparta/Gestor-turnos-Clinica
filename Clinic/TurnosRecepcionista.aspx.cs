@@ -403,7 +403,9 @@ namespace Clinic
         }
         protected void boton_PreRender(object sender, EventArgs e)
         {
+            
             Button boton = (Button)sender;
+            boton.Text = ((Button)sender).CommandArgument;
             int.TryParse(boton.Text, out int i);
             List<Turno> turnosdoctor = (List<Turno>)Session["TurnosDoctor"];
             List<Turno> turnospaciente = (List<Turno>)Session["TurnosPaciente"];
