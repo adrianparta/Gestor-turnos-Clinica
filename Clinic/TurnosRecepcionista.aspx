@@ -54,7 +54,10 @@
 
                     <div class="row">
                         <div class="col-9 p-0">
-                            <asp:Calendar ID="Calendario" runat="server" OnDayRender="Calendario_DayRender" OnSelectionChanged="Calendario_SelectionChanged" AutoPostBack="false" FirstDayOfWeek="Sunday" Height="400px" Width="100%"></asp:Calendar>
+                            <asp:Calendar ID="Calendario" runat="server" OnDayRender="Calendario_DayRender" OnSelectionChanged="Calendario_SelectionChanged" AutoPostBack="false" FirstDayOfWeek="Sunday" Height="400px" Width="100%" BorderColor="Black" BorderStyle="Solid" BorderWidth="2px" DayNameFormat="Shortest" ForeColor="Black" ShowGridLines="True">
+                                <DayHeaderStyle HorizontalAlign="Center" />
+                                <DayStyle BorderColor="Black" BorderStyle="Solid" BorderWidth="1px" Font-Bold="True" />
+                            </asp:Calendar>
                         </div>
                         <div class="col p-0">
                             <ul class="px-1">
@@ -74,9 +77,12 @@
 
         </div>
     </div>
-
-    <asp:TextBox runat="server" ID="TextBoxCausas" />
-    <asp:Button ID="Aceptar" Text="Aceptar" runat="server" OnClick="Aceptar_Click" />
-    <asp:Button ID="Cancelar" Text="Cancelar" runat="server" OnClick="Cancelar_Click" />
+    <div class="justify-content-center d-flex">
+    <asp:TextBox CssClass="col-8 my-4" height="200px" runat="server" ID="TextBoxCausas" />
+    </div>
+    <div class="justify-content-center d-flex">
+    <asp:Button CssClass="btn btn-lg btn-success col-4 mx-1" ID="Aceptar" Text="Aceptar" runat="server" OnClick="Aceptar_Click" />
+    <asp:Button CssClass="btn btn-lg btn-danger col-4 mx-1" ID="Cancelar" Text="Cancelar" runat="server" OnClick="Cancelar_Click" />
+    </div>
 
 </asp:Content>
