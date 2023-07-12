@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\ClinicaIcono.png" />
+    <Content Include="Content\style.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="ListarUsuarios.aspx" />

@@ -23,14 +23,18 @@ namespace Clinic
                 DropDownListEspecialidad.DataValueField = "IdEspecialidad";
                 DropDownListEspecialidad.DataBind();
                 DropDownListEspecialidad.ClearSelection();
-                DropDownListEspecialidad.Items.Insert(0, new ListItem("-- Seleccione --", ""));
+                DropDownListEspecialidad.Items.Insert(0, new ListItem("-- Seleccione una especialidad --", ""));
+                DropDownListEspecialidad.Items[0].Attributes["disabled"] = "disabled";
+                DropDownListEspecialidad.Items[0].Attributes["style"] = "color: lightgray";
 
                 DropDownListPacientes.DataSource = PacienteNegocio.ObtenerPacientes();
                 DropDownListPacientes.DataTextField = "Nombre";
                 DropDownListPacientes.DataValueField = "IdPaciente";
                 DropDownListPacientes.DataBind();
                 DropDownListPacientes.ClearSelection();
-                DropDownListPacientes.Items.Insert(0, new ListItem("-- Seleccione --", ""));
+                DropDownListPacientes.Items.Insert(0, new ListItem("-- Seleccione un paciente --", ""));
+                DropDownListPacientes.Items[0].Attributes["disabled"] = "disabled";
+                DropDownListPacientes.Items[0].Attributes["style"] = "color: lightgray";
 
                 if (!(Request.QueryString["x"] is null))
                 {
@@ -48,7 +52,7 @@ namespace Clinic
             DropDownListMedicos.DataValueField = "IdDoctor";
             DropDownListMedicos.DataBind();
             DropDownListMedicos.ClearSelection();
-            DropDownListMedicos.Items.Insert(0, new ListItem("-- Seleccione --", ""));
+            DropDownListMedicos.Items.Insert(0, new ListItem("-- Seleccione un medico --", ""));
 
             Session["Especialidad"] = EspecialidadNegocio.ObtenerEspecialidad(int.Parse(DropDownListEspecialidad.SelectedValue));
             SugerirTurnos();
@@ -90,10 +94,6 @@ namespace Clinic
             }
         }
 
-        protected void DropDownListHorarios_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
         protected void Calendario_SelectionChanged(object sender, EventArgs e)
         {
             HorarioLaboral h = ((List<HorarioLaboral>)Session["horariolaboral"]).Find(item => (int)item.Dia == (int)Calendario.SelectedDate.DayOfWeek);
@@ -103,32 +103,13 @@ namespace Clinic
             {
                 horarios.Add(i);
             }
-            DropDownListHorarios.DataSource = horarios;
-            DropDownListHorarios.DataBind();
-            DropDownListHorarios.ClearSelection();
-            DropDownListHorarios.Items.Insert(0, new ListItem("-- Seleccione --", ""));
-        }
+            RepeaterHorarios.DataSource = horarios;
+            RepeaterHorarios.DataBind();
 
-        protected void DropDownListHorarios_DataBound(object sender, EventArgs e)
-        {
-            List<Turno> turnosdoctor = TurnoNegocio.ObtenerTurnosDeDoctor((Doctor)Session["doctor"], Calendario.SelectedDate, Calendario.SelectedDate.AddDays(1));
-            List<Turno> turnospaciente = TurnoNegocio.ObtenerTurnosDePaciente((Paciente)Session["paciente"]);
-
-            foreach (ListItem item in DropDownListHorarios.Items)
-            {
-
-                int.TryParse(item.Text, out int i);
-
-                bool doctorocupado = turnosdoctor.Any(aux => aux.Horario.Hour == i);
-                bool pacienteocupado = turnospaciente.Any(aux => aux.Horario.Hour == i && aux.Horario.Date == Calendario.SelectedDate);
-
-                item.Text = item.Text + ":00 - " + (i + 1) + ":00";
-                if (doctorocupado || pacienteocupado)
-                {
-                    item.Attributes["disabled"] = "disabled";
-                    item.Attributes["style"] = "color: lightgray";
-                }
-            }
+            Session["TurnosDoctor"] = new List<Turno>();
+            Session["TurnosPaciente"] = new List<Turno>();
+            Session["TurnosDoctor"] = TurnoNegocio.ObtenerTurnosDeDoctor((Doctor)Session["doctor"], Calendario.SelectedDate, Calendario.SelectedDate.AddDays(1));
+            Session["TurnosPaciente"] = TurnoNegocio.ObtenerTurnosDePaciente((Paciente)Session["paciente"]);
         }
         protected void Aceptar_Click(object sender, EventArgs e)
         {
@@ -137,7 +118,7 @@ namespace Clinic
             aux.Doctor = ((Doctor)Session["Doctor"]);
             aux.Paciente = (Paciente)Session["paciente"];
             aux.Horario = Calendario.SelectedDate;
-            aux.Horario = aux.Horario.AddHours(int.Parse(DropDownListHorarios.SelectedValue));
+            aux.Horario = aux.Horario.AddHours((int)Session["Horario"]);
             aux.Causas = TextBoxCausas.Text;
 
             TurnoNegocio.AgregarTurno(aux);
@@ -415,6 +396,28 @@ namespace Clinic
             Turno turno = ((List<Turno>)Session["TurnosSugeridos"])[i - 1];
             turno.Causas = " ";
             TurnoNegocio.AgregarTurno(turno);
+        }
+        protected void Repeater_Click(object sender, EventArgs e)
+        {
+            Session["Horario"] = ((Button)sender).CommandArgument;
+        }
+        protected void boton_PreRender(object sender, EventArgs e)
+        {
+            Button boton = (Button)sender;
+            int.TryParse(boton.Text, out int i);
+            List<Turno> turnosdoctor = (List<Turno>)Session["TurnosDoctor"];
+            List<Turno> turnospaciente = (List<Turno>)Session["TurnosPaciente"];
+
+
+            bool doctorocupado = turnosdoctor.Any(aux => aux.Horario.Hour == i);
+            bool pacienteocupado = turnospaciente.Any(aux => aux.Horario.Hour == i && aux.Horario.Date == Calendario.SelectedDate);
+
+            boton.Text = boton.Text + ":00 - " + (i + 1) + ":00";
+            if (doctorocupado || pacienteocupado)
+            {
+                boton.Enabled = false;
+                boton.BackColor = Color.LightGray;
+            }
         }
     }
 }

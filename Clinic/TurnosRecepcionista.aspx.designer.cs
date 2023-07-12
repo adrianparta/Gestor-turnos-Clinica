@@ -96,13 +96,13 @@ namespace Clinic
         protected global::System.Web.UI.WebControls.Calendar Calendario;
 
         /// <summary>
-        /// Control DropDownListHorarios.
+        /// Control RepeaterHorarios.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownListHorarios;
+        protected global::System.Web.UI.WebControls.Repeater RepeaterHorarios;
 
         /// <summary>
         /// Control TextBoxCausas.
