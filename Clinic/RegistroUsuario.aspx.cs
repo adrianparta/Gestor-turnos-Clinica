@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
+using Servicios;
 using System.Web.UI.WebControls;
 
 namespace Clinic
@@ -94,9 +95,7 @@ namespace Clinic
 
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
-            Response.Redirect(esAdmin
-                ? "ListarUsuarios.aspx"
-                : "Login.aspx");
+            Response.Redirect("Default.aspx");
         }
 
         protected void btnRegistrar_Click(object sender, EventArgs e)
@@ -131,9 +130,6 @@ namespace Clinic
                             Sexo = (Sexo)ddlSexoAdmin.SelectedIndex + 1,
                         };
                         break;
-                    default:
-                        // Registro Exitoso 
-                        break;
                 }
                 if (btnRegistrar.Text == "Registrar")
                 {
@@ -151,15 +147,10 @@ namespace Clinic
                                 nuevoPaciente.IdUsuario = idUsuario;
                                 PacienteNegocio.AltaPaciente(nuevoPaciente);
                                 break;
-                            default:
-                                // Registro Exitoso 
-                                break;
                         }
                     }
-                    else
-                    {
-                        //Error
-                    }
+
+                    MailServicio.EnviarMail(nuevoUsuario, TipoMail.RegistroUsuario);
                 }
                 else
                 {
@@ -174,9 +165,6 @@ namespace Clinic
                         case TipoUsuario.Paciente:
                             nuevoPaciente.IdUsuario = idUsuarioModificar;
                             PacienteNegocio.ModificarPaciente(nuevoPaciente);
-                            break;
-                        default:
-                            // Registro Exitoso 
                             break;
                     }
                 }
@@ -198,6 +186,7 @@ namespace Clinic
                     };
                     PacienteNegocio.AltaPaciente(nuevoPaciente);
                     Session.Add("Usuario", nuevoPaciente);
+                    MailServicio.EnviarMail(nuevoUsuario, TipoMail.RegistroUsuario);
                     if ((Request.QueryString["x"].ToString()) is null)
                     {
                         Response.Redirect("Default.aspx");
@@ -207,10 +196,6 @@ namespace Clinic
                         Response.Redirect("TurnosRecepcionista.aspx?x=1");
                     }
 
-                }
-                else
-                {
-                    //Error
                 }
             }
         }

@@ -30,3 +30,12 @@ public enum Dia
     Sábado,
     Domingo
 }
+public enum TipoMail
+{
+    RegistroUsuario,
+    ModificacionUsuario,
+    AsignacionTurno,
+    ReasignacionTurno,
+    CancelacionTurno,
+    ObservacionesTurno
+}
