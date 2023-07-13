@@ -11,6 +11,9 @@
         {
             get { return $"{Nombre} {Apellido}"; }
         }
-
+        public override string ToString()
+        {
+            return $"{Apellido}, {Nombre}";
+        }
     }
 }

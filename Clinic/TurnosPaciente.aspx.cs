@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using Negocio;
+using Servicios;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -78,6 +79,7 @@ namespace Clinic
                     paciente.Turnos[index].Estado = Estado.Cancelado;
                     ActualizarTabla();
                     btnCancelarTurno.Enabled = false;
+                    MailServicio.EnviarMailTurno(paciente.Turnos.Find(x => x.IdTurno == idTurno), TipoMail.CancelacionTurno);
                 }
             }
         }

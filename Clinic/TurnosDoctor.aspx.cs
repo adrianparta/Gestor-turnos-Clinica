@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using Negocio;
+using Servicios;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -178,16 +179,24 @@ namespace Clinic
 
         protected void btnGuardarObservacion_Click(object sender, EventArgs e)
         {
-            TurnoNegocio.ActualizarObservaciones((int)Session["TurnoElegido"], txtObservaciones.InnerText);
+            var turnoId = (int)Session["TurnoElegido"];
+            var turno = doctor.Turnos.Find(x => x.IdTurno == turnoId);
+            TurnoNegocio.ActualizarObservaciones(turnoId, txtObservaciones.InnerText);
+            turno.Observaciones = txtObservaciones.InnerText;
             ObtenerTurnosPorFecha();
+            MailServicio.EnviarMailTurno(turno, TipoMail.ObservacionesTurno);
         }
         protected void btnReasignarTurno_Click(object sender, EventArgs e)
         {
             var fecha = DateTime.Parse(txtDia.Text);
+            var turnoId = (int)Session["TurnoElegido"];
+            var turno = doctor.Turnos.Find(x => x.IdTurno == turnoId);
             fecha = fecha.AddHours(Convert.ToInt32(ddlHorario.SelectedValue));
-            TurnoNegocio.ActualizarFecha((int)Session["TurnoElegido"], fecha);
+            TurnoNegocio.ActualizarFecha(turnoId, fecha);
+            turno.Horario = fecha;
             txtDia_TextChanged(txtDia, new EventArgs());
             ObtenerTurnosPorFecha();
+            MailServicio.EnviarMailTurno(turno, TipoMail.ReasignacionTurno);
         }
     }
 }

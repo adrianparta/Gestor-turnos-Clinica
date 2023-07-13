@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using Negocio;
+using Servicios;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -122,6 +123,7 @@ namespace Clinic
             aux.Causas = TextBoxCausas.Text;
 
             TurnoNegocio.AgregarTurno(aux);
+            MailServicio.EnviarMailTurno(aux, TipoMail.AsignacionTurno);
             Response.Redirect("Default.aspx");
         }
 

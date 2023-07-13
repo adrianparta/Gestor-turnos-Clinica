@@ -150,7 +150,7 @@ namespace Clinic
                         }
                     }
 
-                    MailServicio.EnviarMail(nuevoUsuario, TipoMail.RegistroUsuario);
+                    MailServicio.EnviarMailUsuario(nuevoUsuario, TipoMail.RegistroUsuario);
                 }
                 else
                 {
@@ -167,6 +167,7 @@ namespace Clinic
                             PacienteNegocio.ModificarPaciente(nuevoPaciente);
                             break;
                     }
+                    MailServicio.EnviarMailUsuario(nuevoUsuario, TipoMail.ModificacionUsuario);
                 }
             }
             else
@@ -186,8 +187,8 @@ namespace Clinic
                     };
                     PacienteNegocio.AltaPaciente(nuevoPaciente);
                     Session.Add("Usuario", nuevoPaciente);
-                    MailServicio.EnviarMail(nuevoUsuario, TipoMail.RegistroUsuario);
-                    if ((Request.QueryString["x"].ToString()) is null)
+                    MailServicio.EnviarMailUsuario(nuevoUsuario, TipoMail.RegistroUsuario);
+                    if (Request.QueryString["x"] is null)
                     {
                         Response.Redirect("Default.aspx");
                     }
