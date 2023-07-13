@@ -24,7 +24,7 @@
 
     <div class="row justify-content-center">
         <div class="col-4 row">
-            <h2 class="d-flex justify-content-left mt-4 mb-3">Turnos Sugeridos</h2>
+            <h2 class="d-flex justify-content-left my-4">Turnos Sugeridos</h2>
             <asp:Button CssClass="btn btn-primary mb-1" ID="TurnoSugerido1" Text=" -- Turno sugerido 1 -- " OnClick="TurnoSugerido_Click" runat="server" />
             <asp:Button CssClass="btn btn-primary mb-1" ID="TurnoSugerido2" Text=" -- Turno sugerido 2 -- " OnClick="TurnoSugerido_Click" runat="server" />
             <asp:Button CssClass="btn btn-primary mb-4" ID="TurnoSugerido3" Text=" -- Turno sugerido 3 -- " OnClick="TurnoSugerido_Click" runat="server" />

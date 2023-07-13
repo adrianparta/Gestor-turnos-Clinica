@@ -18,7 +18,7 @@ namespace Clinic
                 ddlTipoUsuario.DataSource = TipoUsuarioNegocio.ObtenerTiposUsuarios();
                 ddlTipoUsuario.DataBind();
                 ddlTipoUsuario.ClearSelection();
-                ddlTipoUsuario.Items.Insert(0, new ListItem("-- Seleccione --", ""));
+                ddlTipoUsuario.Items.Insert(0, new ListItem("Seleccione un tipo de usuario", ""));
             }
         }
        
@@ -41,6 +41,13 @@ namespace Clinic
             UsuarioNegocio.BorrarUsuario(id);
             repeaterLista.DataSource = UsuarioNegocio.ListarUsuario(ddlTipoUsuario.SelectedIndex);
             repeaterLista.DataBind();
+        }
+
+        protected void BotonAgregar_Click(object sender, EventArgs e)
+        {
+            int id = ddlTipoUsuario.SelectedIndex;
+            Response.Redirect("RegistroUsuario.aspx?IdTipoUsuario=" + id, false);
+
         }
     }
 }

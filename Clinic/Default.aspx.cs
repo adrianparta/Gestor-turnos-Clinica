@@ -23,7 +23,7 @@ namespace Clinic
                         Response.Redirect("TurnosRecepcionista.aspx");
                         break;
                     case TipoUsuario.Admin:
-                        Response.Redirect("ListarUsuarios");
+                        Response.Redirect("ListarUsuarios.aspx");
                         break;
                 }
             }

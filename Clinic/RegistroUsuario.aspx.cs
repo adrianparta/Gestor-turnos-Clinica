@@ -15,9 +15,12 @@ namespace Clinic
         public int idUsuarioModificar = 0;
         public int idUsuarioActual = -1;
         public TipoUsuario tipoUsuarioRegistro;
+        public int idTipoUsuario = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
             idUsuarioModificar = Convert.ToInt32(Request.QueryString["IdUsuario"]);
+            idTipoUsuario = Convert.ToInt32(Request.QueryString["IdTipoUsuario"]);
+
             if (!IsPostBack)
             {
 
@@ -79,6 +82,10 @@ namespace Clinic
                                 break;
                         }
                     }
+                }
+                if(idTipoUsuario > 0)
+                {
+                    ddlTipoUsuario.SelectedIndex = idTipoUsuario - 1;
                 }
             }
             if (!(Session["Usuario"] is null))

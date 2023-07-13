@@ -10,9 +10,9 @@
 public enum TipoUsuario
 {
     Admin = 1,
-    Doctor,
-    Recepcionista,
-    Paciente
+    Doctor = 2,
+    Recepcionista = 3,
+    Paciente = 4
 }
 public enum Sexo
 {
